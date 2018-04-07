@@ -13,16 +13,17 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-import django_comments
-from django.conf.urls import url,include
+# import django_comments
+from django.conf.urls import url, include
 from django.contrib import admin
-from superpigeons_apps.blog.views import test,index
-from superpigeons_apps.user.views import login
+from superpigeons_apps.index.views import index
+
+
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^$', index),
-    url(r'^login$', login),
-    url(r'^test/', test),
-    url(r'^comment/', include('django_comments.urls')),
+    url(r'^$', index, name='index'),
+    url(r'blog/', include('superpigeons_apps.blog.urls')),
+    url(r'auth/', include('superpigeons_apps.user.urls'))
+    # url(r'^test/', test),
 ]

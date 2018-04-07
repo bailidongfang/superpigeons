@@ -1,0 +1,10 @@
+/*登陆报错文字*/
+ul.errorlist li{
+    color: red;
+}
+/*登陆input*/
+div#div_login input{
+    margin-bottom: 15px;
+}
+
+
