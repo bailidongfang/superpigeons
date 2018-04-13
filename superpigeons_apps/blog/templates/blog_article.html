@@ -1,0 +1,22 @@
+{% extends "base.html" %}
+{#{% load static %}#}
+{#{% block extend_css %}<link rel="stylesheet" type="text/css" href="{% static '/blog/css/blog_write.css' %}"/>{% endblock %}#}
+{% block nav_active_blog%}active{% endblock %}
+{% block body %}
+<h1>article</h1>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-3" style="background-color: #5bc0de">
+{#            <img src="{{ userinfo.headpic.url }}">#}
+        </div>
+        <div class="col-md-9 col-sm-12">
+            {{ article.title | safe}}
+            {{ article.text | safe }}
+            {{ article.text | truncatechars:1 }}
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

@@ -1,0 +1,11 @@
+/*标题*/
+input#title{
+    width: 100%;
+    border: 1px solid #d1d1d1;
+    padding: 8px;
+    margin-bottom: 15px;
+}
+/*富文本编辑框*/
+.django-ckeditor-widget{
+    width: 100%;
+}

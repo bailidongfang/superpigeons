@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load static %}
+{% block extend_css %}<link rel="stylesheet" type="text/css" href="{% static '/blog/css/blog_write.css' %}"/>{% endblock %}
+{% block nav_active_blog%}active{% endblock %}
+{% block body %}
+<h1>write{{ t }}</h1>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-3" style="background-color: #5bc0de">
+{#            <img src="{{ userinfo.headpic.url }}">#}
+        </div>
+        <div class="col-md-9 col-sm-12">
+             <form>
+            {% for i in form %}
+            {{ i }}
+            {% endfor %}
+            </form>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+<script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
+<script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
+{% endblock %}
