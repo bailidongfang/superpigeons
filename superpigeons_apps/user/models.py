@@ -1,10 +1,13 @@
 from django.db import models
 from django.contrib.auth.models import User
+from storages.backends.ftp import FTPStorage
+# from storages.backends.sftpstorage import SFTPStorage
 # Create your models here.
+fs = FTPStorage()
 
 
-class Tags(models.Model):
-    tagname = models.CharField(max_length=20)
+class Interest(models.Model):
+    interestname = models.CharField(max_length=20)
 
 
 class UserInfo(models.Model):
@@ -14,8 +17,8 @@ class UserInfo(models.Model):
     sign = models.CharField(max_length=500, default='这个人很懒，什么都没有留下')
     score = models.IntegerField(default=0)
     level = models.CharField(max_length=20, default='实习小编')
-    tags = models.ManyToManyField(Tags)
-    headpic = models.ImageField(upload_to='headpic')
+    interest = models.ManyToManyField(Interest)
+    headpic = models.ImageField(upload_to='headpic', storage=fs)
 
 
 class UserScore(models.Model):

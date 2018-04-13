@@ -14,7 +14,10 @@ Including another URLconf
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
 # import django_comments
+# from superpigeons import settings
 from django.conf.urls import url, include
+# from django.views.static import serve
+from common.FromFtp import get_from_ftp
 from django.contrib import admin
 from superpigeons_apps.index.views import index
 
@@ -24,6 +27,7 @@ urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^$', index, name='index'),
     url(r'blog/', include('superpigeons_apps.blog.urls')),
-    url(r'auth/', include('superpigeons_apps.user.urls'))
-    # url(r'^test/', test),
+    url(r'auth/', include('superpigeons_apps.user.urls')),
+    url(r'^ckeditor/', include('ckeditor_uploader.urls')),
+    url(r'^media/(?P<path>.*)$', get_from_ftp),
 ]
