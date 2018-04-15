@@ -18,7 +18,7 @@ class UserInfo(models.Model):
     score = models.IntegerField(default=0)
     level = models.CharField(max_length=20, default='实习小编')
     interest = models.ManyToManyField(Interest)
-    headpic = models.ImageField(upload_to='headpic', storage=fs)
+    headpic = models.ImageField(upload_to='headpic', storage=fs, null=True)
 
 
 class UserScore(models.Model):

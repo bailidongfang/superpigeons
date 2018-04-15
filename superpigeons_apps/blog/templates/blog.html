@@ -1,9 +1,0 @@
-{% extends "base.html" %}
-
-{% block nav_active_blog%}active{% endblock %}
-{% block body %}
-<h1>blog</h1>
-{% for i in article %}
-    <a href="{% url 'article' i.id %}">{{ i.title }}</a>
-{% endfor %}
-{% endblock %}

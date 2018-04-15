@@ -1,7 +1,13 @@
 body{
-    margin-top: 70px;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    background-color: #ebebeb;
 }
 
 .panel{
     margin-bottom: 0px;
+}
+
+.container{
+    margin-top: 35px;
 }

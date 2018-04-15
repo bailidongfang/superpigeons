@@ -44,9 +44,9 @@
             <ul class="nav navbar-nav navbar-right" style="margin-right: 10px">
                 {% if user.is_authenticated %}
                     <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> {{ user }}<span class="caret"></span></a>
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> {{ user.username }}<span class="caret"></span></a>
                         <ul class="dropdown-menu" style="min-width:100%;">
-                            <li><a href="" style="text-align: center">用户信息</a></li>
+                            <li><a href="{% url 'userindex' user.username %}" style="text-align: center">我的主页</a></li>
 {#                <li role="separator" class="divider"></li>#}
                             <li><a href="{% url 'logout' %}" style="text-align: center">退出</a></li>
 {#                <li role="separator" class="divider"></li>#}
@@ -68,7 +68,9 @@
     </div>
 </nav>
 
-
+<div class="">
+    <img src="/static/blog/img/background.jpg" class="img-responsive center-block ">
+</div>
 {% block body %}{% endblock %}
 <script src="{% static '/base/js/jquery-3.2.1.js' %}"></script>
 <script src="{% static '/bootstrap-3.3.7-dist/js/bootstrap.min.js' %}"></script>

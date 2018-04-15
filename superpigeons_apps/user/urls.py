@@ -15,9 +15,11 @@ Including another URLconf
 """
 # import django_comments
 from django.conf.urls import url
-from .views import logout, login
+from .views import user_login, user_logout, user_index, user_my_info
 
 urlpatterns = [
-    url(r'login/', login, name='login'),
-    url(r'logout/', logout, name='logout'),
+    url(r'login/', user_login, name='login'),
+    url(r'logout/', user_logout, name='logout'),
+    url(r'myinfo/', user_my_info, name='myinfo'),
+    url(r'userindex/(?P<username>.*)', user_index, name='userindex'),
 ]

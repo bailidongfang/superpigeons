@@ -5,26 +5,26 @@
 {% block body %}
 <div class="container">
     <div class="row">
-
-        <div class="col-sm-3 hidden-xs">
+        <div class="col-md-4" style="">
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <a href="{% url 'userindex' userinfo.username %}">{{ userinfo.nickname }}</a>
-{#                  <img src="{{ userinfo.headpic.url }}">#}
+            {{ userinfo.nickname }}
+{#            <img src="{{ userinfo.headpic.url }}">#}
                 </div>
             </div>
         </div>
-
-        <div class="col-sm-9">
+        <div class="col-md-8" style="">
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <h2>{{ article.title}}</h2>
-                    <p style="text-align: right">{{ article.add_date }}</p>
-                    <div>{{ article.text | safe }}</div>
+                    {% for i in article %}
+                        {{ i.title | safe}}
+                        {{ i.text  | safe}}
+                        {% if not forloop.last%}<hr>{% endif %}
+                    {% endfor %}
+
                 </div>
             </div>
         </div>
-
     </div>
 </div>
 

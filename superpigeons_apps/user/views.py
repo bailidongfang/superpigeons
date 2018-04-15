@@ -1,14 +1,32 @@
 from django.shortcuts import render, redirect
 from django.contrib import auth
 from superpigeons_apps.user.forms import LoginForm
+from superpigeons_apps.user.models import UserInfo
+from superpigeons_apps.blog.models import Article
 # Create your views here.
 
 
-def login(request):
+def user_my_info(request, username):
+    userinfo = UserInfo.objects.get(username=username)
+    context = dict()
+    context['userinfo'] = userinfo
+    return render(request, 'user_info.html' ,context)
+
+
+def user_index(request, username):
+    userinfo = UserInfo.objects.get(username=username)
+    article = Article.objects.filter(auther__username=username)
+    context = dict()
+    context['userinfo'] = userinfo
+    context['article'] = article
+    return render(request, 'user_index.html', context)
+
+
+def user_login(request):
     if request.method == 'GET':
         context = dict()
         context['loginform'] = LoginForm()
-        return render(request, 'login.html', context)
+        return render(request, 'user_login.html', context)
     if request.method == 'POST':
         context = dict()
         loginform = LoginForm(request.POST)
@@ -23,10 +41,10 @@ def login(request):
             return redirect('index')
         else:
             context['loginform'] = loginform
-            return render(request, 'login.html', context)
+            return render(request, 'user_login.html', context)
 
 
-def logout(request):
+def user_logout(request):
     if request.method == 'GET':
         auth.logout(request)
         return redirect('index')
