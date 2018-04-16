@@ -1,2 +1,4 @@
 .idea/*
 *__pycache__
+*/*/migrations/*_initial.py
+*/*/migrations/*_auto_*.py
