@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.contrib import auth
-from superpigeons_apps.user.forms import LoginForm
+from superpigeons_apps.user.forms import LoginForm, RegisterForm
 from superpigeons_apps.user.models import UserInfo
 from superpigeons_apps.blog.models import Article
 # Create your views here.
@@ -48,3 +48,11 @@ def user_logout(request):
     if request.method == 'GET':
         auth.logout(request)
         return redirect('index')
+
+
+def user_register(request):
+    if request.method == 'GET':
+        context = dict()
+        context['registerform'] = RegisterForm()
+        return render(request, 'user_register.html', context)
+

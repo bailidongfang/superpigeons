@@ -1,16 +1,16 @@
 {% extends "base.html" %}
 {% load staticfiles %}
-{% block extend_css %}<link rel="stylesheet" type="text/css" href="{% static '/user/css/login.css' %}"/>{% endblock %}
+{% block extend_css %}<link rel="stylesheet" type="text/css" href="{% static '/user/css/register.css' %}"/>{% endblock %}
 {% block body %}
-<div id="div_login" class="container">
+<div id="div_register" class="container">
     <div class="row">
         <div class="col-sm-4 col-sm-offset-6">
             <div class="panel panel-default">
-                <div class="panel-heading"><h4>用户登录</h4></div>
+                <div class="panel-heading"><h4>用户注册</h4></div>
                 <div class="panel panel-body">
-                    <form method="post" action="{% url 'login' %}" class="form-signin">
+                    <form method="post" action="{% url 'userregister' %}" class="form-signin">
                         {% csrf_token %}
-                        {% for i in loginform %}
+                        {% for i in registerform %}
                             {{ i }}{{ i.errors }}
                         {% endfor %}
                         <div class="checkbox">
@@ -24,7 +24,7 @@
                         {% endif %}
                     </form>
                     <a href="" style="">忘记密码</a>
-                    <a href="{% url 'userregister' %}" style="">注册</a>
+                    <a href="" style="">注册</a>
                 </div>
             </div>
         </div>
