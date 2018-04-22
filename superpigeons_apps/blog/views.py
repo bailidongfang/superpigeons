@@ -7,8 +7,6 @@ from superpigeons_apps.blog.models import Article
 
 def blog_index(request):
     article = Article.objects.values('id', 'auther__userinfo__nickname', 'auther_id', 'title').order_by('-mod_date')
-    for i in article:
-        print(i)
     context = dict()
     context['article'] = article
     return render(request, 'blog_index.html', context)
