@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
-{% block extend_css %}<link rel="stylesheet" type="text/css" href="{% static '/blog/css/blog_write.css' %}"/>{% endblock %}
+{% block extend_static %}<link rel="stylesheet" type="text/css" href="{% static '/apps/blog/css/blog_write.css' %}"/>{% endblock %}
 {% block nav_active_blog%}active{% endblock %}
 {% block body %}
 <h1>write{{ t }}</h1>
