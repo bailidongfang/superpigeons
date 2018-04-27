@@ -13,23 +13,25 @@ class Article(models.Model):
     text = RichTextUploadingField()
     add_date = models.DateTimeField(auto_now_add=True)
     mod_date = models.DateTimeField(auto_now=True)
-    comment_count = models.IntegerField(default=0)
-    seen_count = models.IntegerField(default=0)
 
 
-class ArticleComment(models.Model):
-    article = models.ForeignKey(Article)
+class ArticleSeen(models.Model):
     id = models.AutoField(primary_key=True)
-    commenter = models.CharField(max_length=20)
-    userinfo=models.ForeignKey(UserInfo)
-    comment_text = models.CharField(max_length=200)
-    comment_date = models.DateTimeField(auto_now_add=True)
-    comment_up_count = models.IntegerField(default=0)
+    seener = models.ForeignKey(User)
+    seen_article = models.ForeignKey(Article)
+
+
+class Comment(models.Model):
+    id = models.AutoField(primary_key=True)
+    comment_article = models.ForeignKey(Article)
+    commenter = models.ForeignKey(User)
+    text = models.TextField(default='')
+    date = models.DateTimeField(auto_now_add=True)
 
 
 class CommentUp(models.Model):
-    comment_uper = models.CharField(max_length=100)
-    comment = models.ForeignKey(ArticleComment)
-    is_comment = models.NullBooleanField()
+    id = models.AutoField(primary_key=True)
+    comment_uper = models.ForeignKey(User)
+    comment_article = models.ForeignKey(Comment)
 
 

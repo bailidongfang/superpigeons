@@ -1,10 +1,10 @@
 {% extends "base.html" %}
 {#{% load static %}#}
-{#{% block extend_css %}<link rel="stylesheet" type="text/css" href="{% static '/blog/css/blog_write.css' %}"/>{% endblock %}#}
+{#{% block extend_static %}<link rel="stylesheet" type="text/css" href="{% static '/blog/css/blog_write.css' %}"/>{% endblock %}#}
 {#导航已选项#}
 {% block nav_active_blog%}active{% endblock %}
 {#巨幕图片路径#}
-{% block backgroundpic %}/static/user/img/user_background.jpg{% endblock %}
+{% block backgroundpic %}/static/apps/user/img/user_background.jpg{% endblock %}
 {% block body %}
 <div class="container">
     <div class="row">
@@ -13,6 +13,7 @@
                 <div class="panel-body">
             {{ userinfo.nickname }}
 {#            <img src="{{ userinfo.headpic.url }}">#}
+                    <a class="btn btn-default" href="{% url 'myinfo' userinfo.username %}">修改信息</a>
                 </div>
             </div>
         </div>

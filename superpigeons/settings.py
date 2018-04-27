@@ -91,6 +91,7 @@ DATABASES = {
         'PASSWORD': 'bldflovecx',
         'HOST': '127.0.0.1',
         'PORT': '3306',
+        'OPTIONS': {'charset': 'utf8mb4'},
     }
 }
 
@@ -203,5 +204,5 @@ CKEDITOR_CONFIGS = {
 }
 # FTP
 DEFAULT_FILE_STORAGE = 'storages.backends.ftp.FTPStorage'
-# FTP_STORAGE_LOCATION = 'ftp://baili:baili-123@10.7.5.86:21/home/baili'
-FTP_STORAGE_LOCATION = 'ftp://ftpuser:bldflovecx@123.206.24.128:21/home/ftpuser'
+FTP_STORAGE_LOCATION = 'ftp://baili:baili-123@10.7.5.86:21/home/baili'
+# FTP_STORAGE_LOCATION = 'ftp://ftpuser:bldflovecx@123.206.24.128:21/home/ftpuser'

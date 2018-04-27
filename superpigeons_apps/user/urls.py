@@ -20,7 +20,7 @@ from .views import user_login, user_logout, user_index, user_my_info,user_regist
 urlpatterns = [
     url(r'login/', user_login, name='login'),
     url(r'logout/', user_logout, name='logout'),
-    url(r'myinfo/', user_my_info, name='myinfo'),
+    url(r'myinfo/(?P<username>.*)', user_my_info, name='myinfo'),
     url(r'userindex/(?P<username>.*)', user_index, name='userindex'),
     url(r'register/', user_register, name='userregister')
 ]

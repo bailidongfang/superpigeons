@@ -1,11 +1,25 @@
 {% extends "base.html" %}
-{#{% load static %}#}
-{#{% block extend_css %}<link rel="stylesheet" type="text/css" href="{% static '/blog/css/blog_write.css' %}"/>{% endblock %}#}
+{#加载静态文件#}
+{% load static %}
+{% block extend_static %}
+    <link rel="stylesheet" type="text/css" href="{% static '/apps/blog/css/blog_article.css' %}"/>
+    <!--emojione v2.1.1 使用bootstrap的cdn-->
+    <link rel="stylesheet" type="text/css" href="http://cdn.bootcss.com/emojione/2.1.1/assets/sprites/emojione.sprites.css">
+    <script type="text/javascript" src="http://cdn.bootcss.com/emojione/2.1.1/lib/js/emojione.min.js"></script>
+    <!--emojionearea-->
+    <link rel="stylesheet" type="text/css" href="{% static '/emoji/emojionearea-v2.1.3/css/emojionearea.min.css' %}">
+    <script src="{% static '/emoji/emojionearea-v2.1.3/js/emojionearea.min.js' %}"></script>
+{% endblock %}
+{#导航已选项#}
 {% block nav_active_blog%}active{% endblock %}
+{#巨幕图片路径#}
+{% block backgroundpic %}/static/apps/blog/img/article_background.jpg{% endblock %}
+{#body#}
 {% block body %}
+
 <div class="container">
     <div class="row">
-
+        {#左侧栏#}
         <div class="col-sm-3 hidden-xs">
             <div class="panel panel-default">
                 <div class="panel-body">
@@ -14,19 +28,66 @@
                 </div>
             </div>
         </div>
-
+        {#右侧栏#}
         <div class="col-sm-9">
-            <div class="panel panel-default">
+            {#文章#}
+            <div id="article" class="panel panel-default">
                 <div class="panel-body">
                     <h2>{{ article.title}}</h2>
                     <p style="text-align: right">{{ article.add_date }}</p>
                     <div>{{ article.text | safe }}</div>
                 </div>
             </div>
-        </div>
+            {#评论#}
+            <div id="comment" class="panel panel-default">
+                <div class="panel-heading"><strong>评论列表</strong></div>
+                <div class="panel-body">
+                    {% for i in comment %}
+                        <div>
+                            <div class="comment_user">
+                                {#<img src="{{ i.commenter.userinfo.headpic.url }}">#}
+                                {{ i.commenter.userinfo.nickname }}
+                            </div>
+                            <div class="comment_body">
+                                <div class="comment_text">
+                                    <p class="comment_text_p">{{ i.text }}</p>
+                                </div>
+                                <div class="comment_bottom">
+                                    <p>{{ i.date }}</p>
+                                </div>
+                            </div>
 
+
+
+                        {% if not forloop.last%}<hr>{% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+            {#我要评论#}
+            <div id="new_comment" class="panel panel-default">
+                {#评论体#}
+                <div class="panel-heading"><strong>我要评论</strong></div>
+                <div class="panel-body">
+                    <textarea name="text" id="new_comment_textarea"></textarea>
+                </div>
+                {#提交区域#}
+                <div style="overflow: hidden">
+                    <button class="btn btn-primary" id="new_comment_btn">提交评论</button>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
-
-
+{#向js文件传入模板参数#}
+<script>
+ var jsdata ={
+     comment_csrf:'{{csrf_token}}',
+     comment_url:'{% url 'comment' %}',
+     comment_artid:'{{ article.id }}',
+     commenter_id:'{{ user.id }}',
+     is_login:'{% if user.is_authenticated %}true{% else %}false{% endif %}',
+ }
+</script>
+<script src="{% static '/apps/blog/js/blog_article.js' %}"></script>
 {% endblock %}

@@ -1,0 +1,42 @@
+.emojione{
+    font-size: inherit;
+    height: 2ex;
+    width: 2.1ex;
+    min-height: 20px;
+    min-width: 20px;
+    display: inline-block;
+    margin: -.2ex .15em .2ex;
+    line-height: normal;
+    vertical-align: middle;
+    max-width: 100%;
+    top: 0;
+}
+div#comment{
+    margin-top: 35px;
+}
+
+div.comment_user{
+    width: 70px;
+    text-align: center;
+    float: left
+}
+div.comment_body{
+    margin-left: 80px;
+}
+div.comment_bottom{
+    text-align: right;
+    color: #aaa;
+}
+
+
+div#new_comment{
+    margin-top: 35px;
+}
+
+button#new_comment_btn{
+    float: right;
+    margin-bottom: 15px;
+    margin-left: 15px;
+    margin-right: 15px;
+}
+

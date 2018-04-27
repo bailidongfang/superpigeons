@@ -10,7 +10,8 @@ def user_my_info(request, username):
     userinfo = UserInfo.objects.get(username=username)
     context = dict()
     context['userinfo'] = userinfo
-    return render(request, 'user_info.html' ,context)
+    context['user'] = request.user
+    return render(request, 'user_info.html', context)
 
 
 def user_index(request, username):

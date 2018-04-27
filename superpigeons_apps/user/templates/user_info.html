@@ -1,19 +1,71 @@
 {% extends "base.html" %}
 {% load staticfiles %}
-{#{% block extend_css %}<link rel="stylesheet" type="text/css" href="{% static '/user/css/login.css' %}"/>{% endblock %}#}
+{% block extend_static %}
+    <link rel="stylesheet" type="text/css" href="{% static '/cropper/cropper.min.css' %}">
+    <link rel="stylesheet" type="text/css" href="{% static '/apps/user/css/user_info.css' %}">
+    <script src="{% static '/cropper/cropper.min.js' %}"></script>
+    <script src="{% static '/cropper/jquery-cropper.min.js' %}"></script>
+{% endblock %}
 {% block body %}
 <div id="" class="container">
     <div class="row">
-        <div class="col-sm-4">
-            <div class="panel panel-default" style="background-color: #1b6d85">
-
+        <div class="col-sm-2">
+            <div class="panel panel-default">
+                <ul class="list-group">
+                <li class="list-group-item">我的信息</li>
+                <li class="list-group-item">设置头像</li>
+                <li class="list-group-item">XXXXXXX</li>
+                <li class="list-group-item">XXXXXXX</li>
+                <li class="list-group-item">XXXXXXX</li>
+                </ul>
             </div>
         </div>
-        <div class="col-sm-8">
-            <div class="panel panel-default" style="background-color: #1b6d85">
+        <div class="col-sm-10">
+            <div class="panel panel-default" style="overflow: hidden">
+                <p>{{ userinfo.username }}</p>
+                <p>{{ userinfo.nickname }}</p>
+                <p>{{ userinfo.sign }}</p>
+                <p>{{ userinfo.score }}</p>
+                <p>{{ userinfo.level }}</p>
+                <p>{{ userinfo.headpic }}</p>
+                <p>{{ userinfo.interest }}</p>
+                <img id="test">
+                    {#这里引用杨老师的教程http://yshblog.com/blog/133#}
+                    <div class="col-sm-10">
+                        {#cropper编辑区域#}
+                        <div class="avatar-wrapper" id='avatar-wrapper'>
+                            <img src="">
+                        </div>
+                    </div>
+
+                    <div class="col-sm-2">
+                        {#头像预览区域#}
+                        <div class="avatar-preview"><img style="width: 96px; height: 96px;" src="{{ userinfo.headpic.url }}"></div>
+                        {#上传按钮#}
+                        <a id="upload" class="btn btn-primary">上传头像</a>
+                        <label class="btn btn-primary" for="avatar-input">本地图片</label>
+                        <a id="zoom-in" class="btn btn-primary">zoom-in</a>
+                        <a id="zoom-out" class="btn btn-primary">zoom-out</a>
+                        <a id="reset" class="btn btn-primary">reset</a>
+                    </div>
+
+
+                        {#form#}
+                        <form id="avatar_form">
+                            {%csrf_token%}
+                            <div>
+                                <input style="display:none" type="file" class="avatar-input" id="avatar-input" name="avatar_file" accept=".jpg,.jpeg,.png">
+                                <input type="hidden" id="avatar_x" name="avatar_x">
+                                <input type="hidden" id="avatar_y" name="avatar_y">
+                                <input type="hidden" id="avatar_width" name="avatar_width">
+                                <input type="hidden" id="avatar_height" name="avatar_height">
+                            </div>
+                        </form>
+
 
             </div>
         </div>
     </div>
 </div>
+<script src="{% static '/apps/user/js/user_info.js' %}"></script>
 {% endblock %}
