@@ -1,0 +1,99 @@
+{
+  "_args": [
+    [
+      {
+        "raw": "emojionearea@2.1.3",
+        "scope": null,
+        "escapedName": "emojionearea",
+        "name": "emojionearea",
+        "rawSpec": "2.1.3",
+        "spec": "2.1.3",
+        "type": "version"
+      },
+      "C:\\Users\\Administrator"
+    ]
+  ],
+  "_from": "emojionearea@2.1.3",
+  "_id": "emojionearea@2.1.3",
+  "_inCache": true,
+  "_location": "/emojionearea",
+  "_nodeVersion": "4.2.4",
+  "_npmOperationalInternal": {
+    "host": "packages-12-west.internal.npmjs.com",
+    "tmp": "tmp/emojionearea-2.1.3.tgz_1460072292728_0.3763204012066126"
+  },
+  "_npmUser": {
+    "name": "izman",
+    "email": "izmanw@gmail.com"
+  },
+  "_npmVersion": "2.14.12",
+  "_phantomChildren": {},
+  "_requested": {
+    "raw": "emojionearea@2.1.3",
+    "scope": null,
+    "escapedName": "emojionearea",
+    "name": "emojionearea",
+    "rawSpec": "2.1.3",
+    "spec": "2.1.3",
+    "type": "version"
+  },
+  "_requiredBy": [
+    "#USER"
+  ],
+  "_resolved": "https://registry.npmjs.org/emojionearea/-/emojionearea-2.1.3.tgz",
+  "_shasum": "40dff25623e5edb51fbcd3a7bf0e1bf15e5d594d",
+  "_shrinkwrap": null,
+  "_spec": "emojionearea@2.1.3",
+  "_where": "C:\\Users\\Administrator",
+  "author": {
+    "name": "Andrey Izman",
+    "email": "izmanw@gmail.com"
+  },
+  "bugs": {
+    "url": "https://github.com/mervick/emojionearea/issues"
+  },
+  "dependencies": {},
+  "description": "Simple jQuery WYSIWYG-like plugin with emojione smiles for use in replies and comments",
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-cli": "^0.1.13",
+    "grunt-contrib-cssmin": "^1.0.1",
+    "grunt-contrib-sass": "^1.0.0",
+    "grunt-contrib-uglify": "^1.0.0",
+    "grunt-contrib-watch": "^1.0.0",
+    "requirejs": "^2.1.22"
+  },
+  "directories": {},
+  "dist": {
+    "shasum": "40dff25623e5edb51fbcd3a7bf0e1bf15e5d594d",
+    "tarball": "https://registry.npmjs.org/emojionearea/-/emojionearea-2.1.3.tgz"
+  },
+  "gitHead": "ee40abf7bac4eb80b6e2b2b48c5a94b41a73f73a",
+  "homepage": "https://github.com/mervick/emojionearea#readme",
+  "keywords": [
+    "emoji",
+    "emojione",
+    "area",
+    "emojionearea"
+  ],
+  "license": "MIT",
+  "main": "js/emojionearea.js",
+  "maintainers": [
+    {
+      "name": "izman",
+      "email": "izmanw@gmail.com"
+    }
+  ],
+  "name": "emojionearea",
+  "optionalDependencies": {},
+  "readme": "ERROR: No README data found!",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mervick/emojionearea.git"
+  },
+  "scripts": {
+    "build": "npm install && grunt",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "version": "2.1.3"
+}
