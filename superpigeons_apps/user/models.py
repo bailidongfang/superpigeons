@@ -13,11 +13,11 @@ class Interest(models.Model):
 class UserInfo(models.Model):
     user = models.OneToOneField(User, primary_key=True)
     username = models.CharField(max_length=20)
-    nickname = models.CharField(max_length=20, default='')
+    nickname = models.CharField(max_length=20)
     sign = models.CharField(max_length=500, default='这个人很懒，什么都没有留下')
     score = models.IntegerField(default=0)
     level = models.CharField(max_length=20, default='实习小编')
-    interest = models.ManyToManyField(Interest)
+    interest = models.ManyToManyField(Interest, null=True)
     headpic = models.ImageField(upload_to='headpic', storage=fs, null=True)
 
 

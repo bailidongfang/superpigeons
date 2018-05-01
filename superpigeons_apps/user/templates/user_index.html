@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{#{% load static %}#}
+{% load static %}
 {#{% block extend_static %}<link rel="stylesheet" type="text/css" href="{% static '/blog/css/blog_write.css' %}"/>{% endblock %}#}
 {#导航已选项#}
 {% block nav_active_blog%}active{% endblock %}
@@ -12,7 +12,7 @@
             <div class="panel panel-default">
                 <div class="panel-body">
             {{ userinfo.nickname }}
-{#            <img src="{{ userinfo.headpic.url }}">#}
+            <img style="width: 96px; height: 96px;" src="{% if userinfo.headpic %}{{ userinfo.headpic.url }}{% else %}{% static 'base/img/autoheadpic.jpg'%}{% endif %}">
                     <a class="btn btn-default" href="{% url 'myinfo' userinfo.username %}">修改信息</a>
                 </div>
             </div>

@@ -15,3 +15,9 @@ def get_from_ftp(request,path):
         return FileResponse(file, content_type=content_type)
     else:
         raise Http404()
+
+
+
+def upload_to_ftp(content):
+    storage = FTPStorage()
+    storage.save('test', content)

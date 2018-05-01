@@ -5,6 +5,7 @@
     <link rel="stylesheet" type="text/css" href="{% static '/apps/user/css/user_info.css' %}">
     <script src="{% static '/cropper/cropper.min.js' %}"></script>
     <script src="{% static '/cropper/jquery-cropper.min.js' %}"></script>
+    <script src="{% static '/base/js/jquery-form.js' %}"></script>
 {% endblock %}
 {% block body %}
 <div id="" class="container">
@@ -40,10 +41,10 @@
 
                     <div class="col-sm-2">
                         {#头像预览区域#}
-                        <div class="avatar-preview"><img style="width: 96px; height: 96px;" src="{{ userinfo.headpic.url }}"></div>
+                        <div class="avatar-preview" style=" border-radius: 15%"><img style="width: 96px; height: 96px;" src="{% if userinfo.headpic %}{{ userinfo.headpic.url }}{% else %}{% static 'base/img/autoheadpic.jpg'%}{% endif %}"></div>
                         {#上传按钮#}
                         <a id="upload" class="btn btn-primary">上传头像</a>
-                        <label class="btn btn-primary" for="avatar-input">本地图片</label>
+                        <label class="btn btn-primary" for="avatar-input">选择图片</label>
                         <a id="zoom-in" class="btn btn-primary">zoom-in</a>
                         <a id="zoom-out" class="btn btn-primary">zoom-out</a>
                         <a id="reset" class="btn btn-primary">reset</a>
@@ -51,15 +52,14 @@
 
 
                         {#form#}
-                        <form id="avatar_form">
+                        <form action="{% url 'myinfo_headpic' %}" method="post" id="avatar_form" enctype="multipart/form-data">
                             {%csrf_token%}
-                            <div>
-                                <input style="display:none" type="file" class="avatar-input" id="avatar-input" name="avatar_file" accept=".jpg,.jpeg,.png">
-                                <input type="hidden" id="avatar_x" name="avatar_x">
-                                <input type="hidden" id="avatar_y" name="avatar_y">
-                                <input type="hidden" id="avatar_width" name="avatar_width">
-                                <input type="hidden" id="avatar_height" name="avatar_height">
-                            </div>
+                           <input style="display:none" type="file" class="avatar-input" id="avatar-input" name="avatar_file" accept=".jpg,.jpeg,.png">
+                           <input type="hidden" name="user" value="{{ userinfo.username }}">
+                           <input type="hidden" id="avatar_x" name="avatar_x">
+                           <input type="hidden" id="avatar_y" name="avatar_y">
+                           <input type="hidden" id="avatar_width" name="avatar_width">
+                           <input type="hidden" id="avatar_height" name="avatar_height">
                         </form>
 
 
@@ -67,5 +67,28 @@
         </div>
     </div>
 </div>
+
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title" id="myModalLabel" style="margin: 20px">
+				</h4>
+			</div>
+{#			<div class="modal-body">#}
+{#				在这里添加一些文本#}
+{#			</div>#}
+			<div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">我知道了</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal -->
+</div>
+<script>
+var jsdata = {
+    headpic_url:'{% url 'myinfo_headpic' %}'
+}
+</script>
 <script src="{% static '/apps/user/js/user_info.js' %}"></script>
 {% endblock %}

@@ -67,14 +67,14 @@ class RegisterForm(forms.Form):
     username = forms.CharField(
         required=True,
         label=u'用户名',
-        widget=forms.TextInput(attrs={'placeholder': u'用户名', 'class': u'text'}),
+        widget=forms.TextInput(attrs={'placeholder': u'用户名', 'class': u'form-control'}),
     )
     password = forms.CharField(
         required=True,
         min_length=8,
         label=u'密 码',
         error_messages={'required': u'请输入密码', 'min_length': u'至少输入6位密码'},
-        widget=forms.PasswordInput(attrs={'placeholder': u'密 码', 'class': u'text'}),
+        widget=forms.PasswordInput(attrs={'placeholder': u'密 码', 'class': u'form-control'}),
     )
     passwordagain = forms.CharField(
         # validators=[repassword],
@@ -82,7 +82,7 @@ class RegisterForm(forms.Form):
         min_length=6,
         label=u'确认密码',
         error_messages={'required': u'请输入密码', 'min_length': u'至少输入6位密码'},
-        widget=forms.PasswordInput(attrs={'placeholder': u'确认密码', 'class': u'text'}),
+        widget=forms.PasswordInput(attrs={'placeholder': u'确认密码', 'class': u'form-control'}),
     )
     # nikename = forms.CharField(
     #     required=True,
@@ -95,7 +95,7 @@ class RegisterForm(forms.Form):
         # validators=[email_validate],
         required=True,
         label=u'邮箱',
-        widget=forms.EmailInput(attrs={'placeholder': u'邮箱', 'class': u'text'}),
+        widget=forms.EmailInput(attrs={'placeholder': u'邮箱', 'class': u'form-control'}),
     )
 
 

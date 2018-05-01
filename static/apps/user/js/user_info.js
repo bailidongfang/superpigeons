@@ -13,13 +13,13 @@ $(document).ready(function () {
                 autoCropArea: 1,    //自动裁剪的比例
 
                 //文本的jQuery选择表达式，一个div
-                preview: $(".avatar-preview").selector,
+                preview: ".avatar-preview",//预览区域
                 crop: function (e) {
                     //返回图片编辑相关数据
-                    $('#avatar_x').val(e.x);
-                    $('#avatar_y').val(e.y);
-                    $('#avatar_width').val(e.width);
-                    $('#avatar_height').val(e.height);
+                    $('#avatar_x').val(e.detail.x);
+                    $('#avatar_y').val(e.detail.y);
+                    $('#avatar_width').val(e.detail.width);
+                    $('#avatar_height').val(e.detail.height);
                 },
             });
         // }
@@ -36,13 +36,42 @@ $(document).ready(function () {
                       var blobURL = URL.createObjectURL(file);
                       image.cropper('reset').cropper('replace', blobURL);
                       $('.avatar_crop .disabled').removeClass('disabled');
-                      alert('本地图片：可调整到最佳状态再上传');
                     } else {
                       alert('请选择一张图片');
                     }
                 }
             }
         });
+
+        //上传按钮
+        $('#upload').click(function () {
+                if($('#avatar-wrapper img').attr('src')==''){
+                        $('#infoModal h4').html('请先选择一个图片')
+                        $('#infoModal').modal('show')
+                        return false;}
+                var $form=$("#avatar_form")
+                $form.ajaxSubmit(function (headpicaddress) {
+                        // $("#auther_info_headpic").attr('src','/outlib/'+headpicaddress)
+                })
+                // var formData = new FormData($("#avatar_form")[0]);
+                //     $.ajax({
+                //         url: jsdata.headpic_url,
+                //         type: 'POST',
+                //         data: formData,
+                //         async: false,
+                //         cache: false,
+                //         contentType: false,
+                //         processData: false,
+                //         success: function (data){
+                //             //更新导航右上角的头像
+                //             $('.navbar-avatar').attr('src', '/' + data['avatar_url']);
+                //             alert("上传头像成功");
+                //         },
+                //         error: function (err) {
+                //             alert("提交失败，请重试！" + err);
+                //         }
+                //     });
+        })
 
         var zoom = 1;
         $("#zoom-in").click(function(){

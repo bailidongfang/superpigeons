@@ -8,26 +8,41 @@
             <div class="panel panel-default">
                 <div class="panel-heading"><h4>用户注册</h4></div>
                 <div class="panel panel-body">
-                    <form method="post" action="{% url 'userregister' %}" class="form-signin">
+                    <form id="register_form" method="post" action="{% url 'userregister' %}" class="form-signin">
                         {% csrf_token %}
                         {% for i in registerform %}
                             {{ i }}{{ i.errors }}
                         {% endfor %}
-                        <div class="checkbox">
-                            <label>
-                                <input type="checkbox">记住我
-                            </label>
-                        </div>
-                        <button class="btn btn-primary btn-block" style="margin-bottom: 15px">登录</button>
-                        {% if message %}
-                            <p id="message">{{message}}</p>
-                        {% endif %}
+                        <button class="btn btn-primary btn-block" style="margin-bottom: 15px">注册</button>
                     </form>
-                    <a href="" style="">忘记密码</a>
-                    <a href="" style="">注册</a>
+                <p id="register_rst" hidden>{% if message %}{{ message }}{% endif %}</p>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<!-- 模态框（Modal） -->
+<div class="modal fade" id="registerModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title" id="myModalLabel" style="margin: 20px">
+					注册成功
+				</h4>
+			</div>
+{#			<div class="modal-body">#}
+{#				在这里添加一些文本#}
+{#			</div>#}
+			<div class="modal-footer">
+				<a href="{% url 'login' %}" class="btn btn-primary">
+					现在登陆
+				</a>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal -->
+</div>
+
+
+<script src="{% static '/apps/user/js/user_register.js' %}"></script>
 {% endblock %}

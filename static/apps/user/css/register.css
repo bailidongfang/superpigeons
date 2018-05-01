@@ -14,6 +14,10 @@ ul.errorlist li{
     color: red;
 }
 /*登陆input*/
-div#div_login input{
+div#div_register input{
     margin-bottom: 15px;
+}
+
+#registerModal{
+    margin-top: 200px;
 }
