@@ -1,16 +1,14 @@
 from django.shortcuts import render, redirect
-from django.core.files.uploadedfile import InMemoryUploadedFile
 from django.http.response import HttpResponse
 from django.contrib import auth
 from django.contrib.auth.models import User
 from superpigeons_apps.user.forms import LoginForm, RegisterForm
-from superpigeons_apps.user.models import UserInfo
+from superpigeons_apps.user.models import UserInfo,headpic_path
 from superpigeons_apps.blog.models import Article
-from common.FromFtp import upload_to_ftp
 from django.db import transaction
-from PIL import Image
-import os
-from superpigeons import settings
+from common.FromFtp import headpic_to_ftp
+from common.ImagePillow import crop_image
+import random
 # Create your views here.
 
 
@@ -24,34 +22,30 @@ def user_my_info(request, username):
 
 def user_my_info_headpic(request):
     # 剪裁数据获取
-    username = request.POST['user']
+    username = request.user
+    headpic_name = headpic_path+'/'+str(username)+'.jpg'
     file = request.FILES['avatar_file']
     top = int(float(request.POST['avatar_y']))
     buttom = top + int(float(request.POST['avatar_height']))
     left = int(float(request.POST['avatar_x']))
     right = left + int(float(request.POST['avatar_width']))
-    # 打开图片
-    im = Image.open(file)
-    # 剪裁图片
-    crop_im = im.crop((left, top, right, buttom))
-    # 保存图片
-    crop_im.save(os.path.join(settings.BASE_DIR, "tmp.jpg"))
-
-    # with open(os.path.join(settings.BASE_DIR, "tmp.jpg"), 'wb') as f:
-    #     upload_to_ftp(f)
-
-    # userinfo = UserInfo.objects.get(username=username)
-    # userinfo.headpic = memfile
-    # userinfo.save()
-    return HttpResponse("ok")
+    # 剪裁头像
+    crop_file = crop_image(file, left, top, right, buttom)
+    # 上传头像
+    headpic_to_ftp(headpic_name, crop_file)
+    # 修改头像信息
+    userinfo = UserInfo.objects.get(username=username)
+    userinfo.headpic = headpic_name
+    userinfo.save()
+    return HttpResponse("success")
 
 
 def user_index(request, username):
     userinfo = UserInfo.objects.get(username=username)
-    article = Article.objects.filter(auther__username=username)
+    articles = Article.objects.filter(auther__username=username)
     context = dict()
     context['userinfo'] = userinfo
-    context['article'] = article
+    context['articles'] = articles
     return render(request, 'user_index.html', context)
 
 

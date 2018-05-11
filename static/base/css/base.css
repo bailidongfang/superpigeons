@@ -11,3 +11,17 @@ body{
 .container{
     margin-top: 35px;
 }
+
+.commonheadpic{
+  border-radius: 15%;
+  overflow: hidden;
+  height: 96px;
+  width: 96px;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+.commonheadpic img{
+  height: 96px;
+  width: 96px;
+}

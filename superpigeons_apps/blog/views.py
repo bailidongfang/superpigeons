@@ -36,13 +36,15 @@ def blog_comment(request):
 
 
 def blog_write(request):
-    form = WriteArticle()
-    userinfo = UserInfo.objects.get(user__username='bailidf')
-    context = dict()
-    context['t'] = 'aaaa'
-    context['userinfo'] = userinfo
-    context['form'] = form
-    return render(request, 'blog_write.html', context)
+    if request.method=='GET':
+        form = WriteArticle()
+        userinfo = UserInfo.objects.get(user__username='bailidf')
+        context = dict()
+        context['userinfo'] = userinfo
+        context['form'] = form
+        return render(request, 'blog_write.html', context)
+    if request.method=='POST':
+        
 
 
 def test(request):

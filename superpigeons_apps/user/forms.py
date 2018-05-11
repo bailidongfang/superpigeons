@@ -36,7 +36,7 @@ class LoginForm(forms.Form):
     )
     password = forms.CharField(
         required=True,
-        min_length=6,
+        min_length=8,
         label=u'Password',
         error_messages={'required': u'请输入密码', 'min_length': u'至少输入6位密码'},
         widget=forms.PasswordInput(attrs={'placeholder': u'密 码', 'class': u'form-control'}),
@@ -67,6 +67,7 @@ class RegisterForm(forms.Form):
     username = forms.CharField(
         required=True,
         label=u'用户名',
+        min_length=6,
         widget=forms.TextInput(attrs={'placeholder': u'用户名', 'class': u'form-control'}),
     )
     password = forms.CharField(

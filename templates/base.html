@@ -48,14 +48,12 @@
 
             <ul class="nav navbar-nav navbar-right" style="margin-right: 10px">
                 {% if user.is_authenticated %}
-                    <li class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> {{ user.username }}<span class="caret"></span></a>
+                    <li class="dropdown {% block nav_active_user%}{% endblock %}">
+                        <a  style="min-width: 120px;text-align: center" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> {{ user.username }}<span class="caret"></span></a>
                         <ul class="dropdown-menu" style="min-width:100%;">
-                            <li><a href="{% url 'userindex' user.username %}" style="text-align: center">我的主页</a></li>
-{#                <li role="separator" class="divider"></li>#}
-                            <li><a href="{% url 'logout' %}" style="text-align: center">退出</a></li>
-{#                <li role="separator" class="divider"></li>#}
-                            <li><a href="" style="text-align: center">暂无</a></li>
+                            <li><a href="{% url 'userindex' user.username %}"><span class="glyphicon glyphicon-home"></span> 我的主页</a></li><li class="divider"></li>
+                            <li><a href="{% url 'write' %}"><span class="glyphicon glyphicon-pencil"></span> 新的博客</a></li><li class="divider"></li>
+                            <li><a href="{% url 'logout' %}"><span class="glyphicon glyphicon-off"></span> 退出</a></li>
                         </ul>
                     </li>
                 {% else %}

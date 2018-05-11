@@ -17,7 +17,10 @@ def get_from_ftp(request,path):
         raise Http404()
 
 
-
-def upload_to_ftp(content):
+def headpic_to_ftp(path, content):
     storage = FTPStorage()
-    storage.save('test', content)
+    if storage.exists(path):
+        storage.delete(path)
+        storage.save(path, content)
+    else:
+        storage.save(path, content)

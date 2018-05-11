@@ -11,21 +11,45 @@
         <div class="col-md-4" style="">
             <div class="panel panel-default">
                 <div class="panel-body">
-            {{ userinfo.nickname }}
-            <img style="width: 96px; height: 96px;" src="{% if userinfo.headpic %}{{ userinfo.headpic.url }}{% else %}{% static 'base/img/autoheadpic.jpg'%}{% endif %}">
-                    <a class="btn btn-default" href="{% url 'myinfo' userinfo.username %}">修改信息</a>
+                    <div class="row">
+                        <div class="col-xs-6" style="margin-top: 30px">
+                              <h3 style="text-align: center">{{ userinfo.nickname }}</h3><br>
+                              <li class="list-unstyled">{{ userinfo.sign }}</li>
+                        </div>
+                        <div class="col-xs-6">
+                            <div class="commonheadpic center-block">
+                                <img style="width: 96px; height: 96px;" src="{% if userinfo.headpic %}{{ userinfo.headpic.url }}{% else %}{% static 'base/img/autoheadpic.jpg'%}{% endif %}">
+                            </div>
+                            <a class="btn btn-default center-block" href="{% url 'myinfo' userinfo.username %}">修改信息</a>
+                        </div>
+                    </div>
+                    <div style="margin-top: 50px">
+                        <li class="list-unstyled">积分：{{ userinfo.score }}</li><br>
+                        <li class="list-unstyled">头衔：{{ userinfo.level }}</li><br>
+                        <li class="list-unstyled">{{ userinfo.interest }}</li>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-8" style="">
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    {% for i in article %}
-                        {{ i.title | safe}}
-                        {{ i.text  | safe}}
-                        {% if not forloop.last%}<hr>{% endif %}
-                    {% endfor %}
+        <div class="col-md-8">
+            <div class="panel panel-default" style="padding: 20px">
+                <ul class="nav nav-tabs">
+                <li class="active"><a href="#tab_article" data-toggle="tab"><span class="glyphicon glyphicon-book"></span> 博客</a></li>
+                <li><a href="#tab_like" data-toggle="tab"><span class="glyphicon glyphicon-star"></span> 收藏</a></li>
+                <li><a href="#">暂无</a></li>
+                </ul>
 
+                <div class="tab-content">
+                    <div id="tab_article" class="tab-pane fade in active" style="padding: 20px">
+                        {% for i in articles %}
+                            {{ i.title | safe}}
+                            {{ i.text  | safe}}
+                            {% if not forloop.last%}<hr>{% endif %}
+                        {% endfor %}
+                    </div>
+                    <div id="tab_like" class="tab-pane fade">
+                        <h1>暂无内容</h1>
+                    </div>
                 </div>
             </div>
         </div>

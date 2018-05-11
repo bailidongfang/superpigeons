@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load staticfiles %}
+{% block nav_active_user%}active{% endblock %}
 {% block extend_static %}
     <link rel="stylesheet" type="text/css" href="{% static '/cropper/cropper.min.css' %}">
     <link rel="stylesheet" type="text/css" href="{% static '/apps/user/css/user_info.css' %}">
@@ -8,61 +9,88 @@
     <script src="{% static '/base/js/jquery-form.js' %}"></script>
 {% endblock %}
 {% block body %}
-<div id="" class="container">
+
+<div id="" class="container" style="margin-top: 100px">
     <div class="row">
         <div class="col-sm-2">
             <div class="panel panel-default">
-                <ul class="list-group">
-                <li class="list-group-item">我的信息</li>
-                <li class="list-group-item">设置头像</li>
-                <li class="list-group-item">XXXXXXX</li>
-                <li class="list-group-item">XXXXXXX</li>
-                <li class="list-group-item">XXXXXXX</li>
+                <ul class="nav nav-pills nav-stacked" id="left_nav">
+                <li class="active"><a href="#tab_myinfo" data-toggle="pill"><span class="glyphicon glyphicon-th-list"></span> 基本信息</a></li>
+                <li><a href="#tab_headpic" data-toggle="pill"><span class="glyphicon glyphicon-camera"></span> 设置头像</a></li>
+                <li><a href="#">暂无</a></li>
                 </ul>
             </div>
         </div>
-        <div class="col-sm-10">
-            <div class="panel panel-default" style="overflow: hidden">
-                <p>{{ userinfo.username }}</p>
-                <p>{{ userinfo.nickname }}</p>
-                <p>{{ userinfo.sign }}</p>
-                <p>{{ userinfo.score }}</p>
-                <p>{{ userinfo.level }}</p>
-                <p>{{ userinfo.headpic }}</p>
-                <p>{{ userinfo.interest }}</p>
-                <img id="test">
+        <div class="col-sm-10 tab-content">
+            <div id="tab_myinfo" class="panel panel-default tab-pane fade in active" style="padding: 30px">
+                <div class="row">
+                    <div class="col-xs-8">
+                        <div class="input-group">
+                            <span class="input-group-addon">用户名</span>
+                            <input type="text" class="form-control" value="{{ userinfo.username }}" readonly>
+                        </div>
+                        <div class="input-group">
+                            <span class="input-group-addon">积分</span>
+                            <input type="text" class="form-control" value="{{ userinfo.score }}" readonly>
+                        </div>
+                        <div class="input-group">
+                            <span class="input-group-addon">头衔</span>
+                            <input type="text" class="form-control" value="{{ userinfo.level }}" readonly>
+                        </div>
+                    </div>
+                    <div class="col-xs-4">
+                        <div class="commonheadpic center-block">
+                            <img src="{% if userinfo.headpic %}{{ userinfo.headpic.url }}{% else %}{% static 'base/img/autoheadpic.jpg'%}{% endif %}">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <span class="input-group-addon">个性签名</span>
+                    <textarea type="text" class="form-control" style="resize: none">{{ userinfo.sign }}</textarea>
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon">昵称</span>
+                    <input type="text" class="form-control" value="{{ userinfo.nickname }}">
+                </div>
+                <div class="input-group">
+                    <span class="input-group-addon">兴趣</span>
+                    <input type="text" class="form-control" value="{{ userinfo.interest }}">
+                </div>
+            </div>
+            <div id="tab_headpic" class="tab-pane fade">
                     {#这里引用杨老师的教程http://yshblog.com/blog/133#}
                     <div class="col-sm-10">
                         {#cropper编辑区域#}
-                        <div class="avatar-wrapper" id='avatar-wrapper'>
+                        <div class="avatar-wrapper panel panel-default" id='avatar-wrapper'>
                             <img src="">
                         </div>
+                        <div class="btn-group" style="margin: 20px;">
+                            <a id="zoom-in" class="btn btn-primary">放大</a>
+                            <a id="zoom-out" class="btn btn-primary">缩小</a>
+                            <a id="reset" class="btn btn-primary">重置</a>
+                        </div>
                     </div>
-
-                    <div class="col-sm-2">
+                    <div class="col-sm-2 panel panel-default" style="padding-top: 30px;padding-bottom: 30px">
                         {#头像预览区域#}
-                        <div class="avatar-preview" style=" border-radius: 15%"><img style="width: 96px; height: 96px;" src="{% if userinfo.headpic %}{{ userinfo.headpic.url }}{% else %}{% static 'base/img/autoheadpic.jpg'%}{% endif %}"></div>
+                        <div class="avatar-preview center-block">
+                            <img src="{% if userinfo.headpic %}{{ userinfo.headpic.url }}{% else %}{% static 'base/img/autoheadpic.jpg'%}{% endif %}">
+                        </div>
                         {#上传按钮#}
-                        <a id="upload" class="btn btn-primary">上传头像</a>
-                        <label class="btn btn-primary" for="avatar-input">选择图片</label>
-                        <a id="zoom-in" class="btn btn-primary">zoom-in</a>
-                        <a id="zoom-out" class="btn btn-primary">zoom-out</a>
-                        <a id="reset" class="btn btn-primary">reset</a>
+                        <div class="btn-group-vertical center-block" style="margin-top: 20px;width: 80%">
+                            <a id="upload" class="btn btn-primary">上传头像</a>
+                            <label class="btn btn-primary" for="avatar-input">选择图片</label>
+                        </div>
                     </div>
-
-
                         {#form#}
-                        <form action="{% url 'myinfo_headpic' %}" method="post" id="avatar_form" enctype="multipart/form-data">
-                            {%csrf_token%}
-                           <input style="display:none" type="file" class="avatar-input" id="avatar-input" name="avatar_file" accept=".jpg,.jpeg,.png">
-                           <input type="hidden" name="user" value="{{ userinfo.username }}">
-                           <input type="hidden" id="avatar_x" name="avatar_x">
-                           <input type="hidden" id="avatar_y" name="avatar_y">
-                           <input type="hidden" id="avatar_width" name="avatar_width">
-                           <input type="hidden" id="avatar_height" name="avatar_height">
-                        </form>
-
-
+                    <form action="{% url 'myinfo_headpic' %}" method="post" id="avatar_form" enctype="multipart/form-data">
+                        {%csrf_token%}
+                       <input style="display:none" type="file" class="avatar-input" id="avatar-input" name="avatar_file" accept=".jpg,.jpeg,.png">
+                       <input type="hidden" id="avatar_x" name="avatar_x">
+                       <input type="hidden" id="avatar_y" name="avatar_y">
+                       <input type="hidden" id="avatar_width" name="avatar_width">
+                       <input type="hidden" id="avatar_height" name="avatar_height">
+                    </form>
             </div>
         </div>
     </div>
@@ -85,10 +113,12 @@
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal -->
 </div>
+
 <script>
 var jsdata = {
     headpic_url:'{% url 'myinfo_headpic' %}'
 }
 </script>
+
 <script src="{% static '/apps/user/js/user_info.js' %}"></script>
 {% endblock %}

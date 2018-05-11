@@ -23,8 +23,6 @@ $(document).ready(function () {
                 },
             });
         // }
-
-
         $("#avatar-input").change(function(){
 
             var URL = window.URL || window.webkitURL;
@@ -42,7 +40,6 @@ $(document).ready(function () {
                 }
             }
         });
-
         //上传按钮
         $('#upload').click(function () {
                 if($('#avatar-wrapper img').attr('src')==''){
@@ -50,7 +47,11 @@ $(document).ready(function () {
                         $('#infoModal').modal('show')
                         return false;}
                 var $form=$("#avatar_form")
-                $form.ajaxSubmit(function (headpicaddress) {
+                $form.ajaxSubmit(function (rst) {
+                        if (rst=='success'){
+                            $('#infoModal h4').html('上传成功')
+                            $('#infoModal').modal('show')
+                        }
                         // $("#auther_info_headpic").attr('src','/outlib/'+headpicaddress)
                 })
                 // var formData = new FormData($("#avatar_form")[0]);
@@ -72,7 +73,6 @@ $(document).ready(function () {
                 //         }
                 //     });
         })
-
         var zoom = 1;
         $("#zoom-in").click(function(){
             if(zoom<1.5){
@@ -86,19 +86,16 @@ $(document).ready(function () {
                 image.cropper("zoom", -0.1);
             }
         });
-
         //复位按钮
         $('#reset').click(function(){
             image.cropper("reset");
             zoom = 1;
         });
 
-        //修改头像预览
-        // $("#avatar-input").on('change',function () {
-        //     var headpic=$(this)[0].files[0];
-        //     var url=window.URL.createObjectURL(headpic)
-        //     $("#avatar-wrapper img").attr('src',url)
-        //     init()
-        // })
 
+
+        $('#left_nav a').click(function (e) {
+            e.preventDefault()
+            $(this).tab('show')
+        })
 })
