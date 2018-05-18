@@ -43,24 +43,21 @@
                 <div class="panel-heading"><strong>评论列表</strong></div>
                 <div class="panel-body">
                     {% for i in comment %}
-                        <div>
-                            <div class="comment_user">
-                                {#<img src="{{ i.commenter.userinfo.headpic.url }}">#}
-                                {{ i.commenter.userinfo.nickname }}
+                        <div class="row" style="padding-top: 20px">
+                            <div class="col-xs-4 col-sm-2">
+                                <img class="comment_headpic center-block" src="{{ i.commenter.userinfo.headpic.url }}">
+                                <p style="text-align: center">{{ i.commenter.userinfo.nickname }}</p>
                             </div>
-                            <div class="comment_body">
-                                <div class="comment_text">
+                            <div class="col-xs-8 col-sm-10">
+                                <div class="comment_text" style="min-height: 90px">
                                     <p class="comment_text_p">{{ i.text }}</p>
                                 </div>
                                 <div class="comment_bottom">
                                     <p>{{ i.date }}</p>
                                 </div>
                             </div>
-
-
-
-                        {% if not forloop.last%}<hr>{% endif %}
                         </div>
+                        {% if not forloop.last%}<hr>{% endif %}
                     {% empty %}
                         <p>暂无评论</p>
                     {% endfor %}

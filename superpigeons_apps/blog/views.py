@@ -25,14 +25,17 @@ def blog_article(request, artid):
 
 
 def blog_comment(request):
-    print(request.POST)
-    art_id = request.POST['comment_art_id']
-    text = request.POST['comment_text']
-    commenter_id = request.POST['commenter_id']
-    commenter = User.objects.get(id=commenter_id)
-    article = Article.objects.get(id=art_id)
-    Comment.objects.create(comment_article=article, commenter=commenter, text=text)
-    return HttpResponse('success')
+    try:
+        art_id = request.POST['comment_art_id']
+        text = request.POST['comment_text']
+        commenter_id = request.POST['commenter_id']
+        commenter = User.objects.get(id=commenter_id)
+        article = Article.objects.get(id=art_id)
+        Comment.objects.create(comment_article=article, commenter=commenter, text=text)
+    except Exception as e:
+        return HttpResponse(e)
+    else:
+        return HttpResponse('success')
 
 
 def blog_edit(request, artid):

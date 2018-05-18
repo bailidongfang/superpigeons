@@ -44,8 +44,13 @@ def user_index(request, username):
     userinfo = UserInfo.objects.get(username=username)
     articles = Article.objects.filter(auther__username=username)
     context = dict()
+    if str(request.user) == username:
+        context['permission'] = 'ture'
+    else:
+        context['permission'] = 'false'
     context['userinfo'] = userinfo
     context['articles'] = articles
+    print(context['permission'])
     return render(request, 'user_index.html', context)
 
 

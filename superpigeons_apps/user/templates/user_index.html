@@ -20,7 +20,10 @@
                             <div class="commonheadpic center-block">
                                 <img style="width: 96px; height: 96px;" src="{% if userinfo.headpic %}{{ userinfo.headpic.url }}{% else %}{% static 'base/img/autoheadpic.jpg'%}{% endif %}">
                             </div>
-                            <a class="btn btn-default center-block" href="{% url 'myinfo' userinfo.username %}">修改信息</a>
+                            {% if permission == 'ture' %}
+                                <a class="btn btn-default center-block" href="{% url 'myinfo' userinfo.username %}">修改信息</a>
+                            {% else %}
+                            {% endif %}
                         </div>
                     </div>
                     <div style="margin-top: 50px">
@@ -45,8 +48,11 @@
                             <div id="{{ i.id }}">
                                 {{ i.title | safe}}
 {#                                {{ i.text  | striptags|safe|truncatechars:100|linebreaks }}#}
+                                {% if permission == 'ture' %}
                                 <span class="glyphicon glyphicon-trash article_delete" id="{{ i.id }}" style="float: right"></span>
                                 <span class="glyphicon glyphicon-edit article_edit" id="{{ i.id }}" style="float: right;margin-right: 10px"></span>
+                                {% else %}
+                                {% endif %}
                                 {% if not forloop.last%}<hr>{% endif %}
                             </div>
                         {% empty %}

@@ -18,23 +18,27 @@
     max-width: 100%;
     top: 0;
 }
+
 div#comment{
     margin-top: 35px;
-}
-
-div.comment_user{
-    width: 70px;
-    text-align: center;
-    float: left
-}
-div.comment_body{
-    margin-left: 80px;
 }
 div.comment_bottom{
     text-align: right;
     color: #aaa;
+    bottom: 0px;
 }
 
+.comment_headpic{
+  border-radius: 15%;
+  overflow: hidden;
+  height: 70px;
+  width: 70px;
+  margin-bottom: 20px;
+}
+.comment_headpic img{
+  height: 70px;
+  width: 70px;
+}
 
 div#new_comment{
     margin-top: 35px;
@@ -45,4 +49,7 @@ button#new_comment_btn{
     margin-left: 15px;
     margin-right: 15px;
 }
+
+
+
 
