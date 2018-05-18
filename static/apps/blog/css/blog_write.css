@@ -9,3 +9,7 @@ input#title{
 .django-ckeditor-widget{
     width: 100%;
 }
+
+div.container{
+    margin-top: 100px;
+ }

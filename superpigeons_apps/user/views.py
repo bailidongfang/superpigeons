@@ -49,6 +49,12 @@ def user_index(request, username):
     return render(request, 'user_index.html', context)
 
 
+def user_index_inter(request):
+    if request.POST['type']=='delete':
+        Article.objects.get(id=request.POST['article_id']).delete()
+    return HttpResponse('success')
+
+
 def user_login(request):
     if request.method == 'GET':
         context = dict()

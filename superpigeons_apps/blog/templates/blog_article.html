@@ -35,7 +35,7 @@
                 <div class="panel-body">
                     <h2>{{ article.title}}</h2>
                     <p style="text-align: right">{{ article.add_date }}</p>
-                    <div>{{ article.text | safe }}</div>
+                    <div id="article_panel">{{ article.text | safe }}</div>
                 </div>
             </div>
             {#评论#}
@@ -61,6 +61,8 @@
 
                         {% if not forloop.last%}<hr>{% endif %}
                         </div>
+                    {% empty %}
+                        <p>暂无评论</p>
                     {% endfor %}
                 </div>
             </div>

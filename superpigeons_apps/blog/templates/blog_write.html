@@ -1,8 +1,11 @@
 {% extends "base.html" %}
 {% load static %}
-{% block extend_static %}<link rel="stylesheet" type="text/css" href="{% static '/apps/blog/css/blog_write.css' %}"/>{% endblock %}
+{% block extend_static %}
+    <link rel="stylesheet" type="text/css" href="{% static '/apps/blog/css/blog_write.css' %}"/>
+    <script src="{% static '/base/js/jquery-form.js' %}"></script>
+{% endblock %}
 {% block nav_active_blog%}active{% endblock %}
-{% block body %}>
+{% block body %}
 
 <div class="container">
     <div class="row">
@@ -10,22 +13,25 @@
 {#            <img src="{{ userinfo.headpic.url }}">#}
         </div>
         <div class="col-md-9 col-sm-12">
-             <form>
-            {% for i in form %}
-            {{ i }}
-            {% endfor %}
+            <form id="write_form">
+                {%csrf_token%}
+                {% for i in form %}
+                {{ i }}
+                {% endfor %}
             </form>
-            <button class="btn-primary" id="submit_write"></button>
+            <button class="btn btn-primary" id="submit_write" style="float: right;margin-top: 10px">提交</button>
         </div>
     </div>
 </div>
 
-
-
-
-
+<script>
+var template_type = '{{ template_type }}'
+var jsdata={
+    comment_url:'{% url 'edit' template_type %}',
+}
+</script>
 
 <script type="text/javascript" src="{% static "ckeditor/ckeditor-init.js" %}"></script>
 <script type="text/javascript" src="{% static "ckeditor/ckeditor/ckeditor.js" %}"></script>
-<script type="text/javascript" src="{% static "apps/" %}"></script>
+<script type="text/javascript" src="{% static "apps/blog/js/blog_write.js" %}"></script>
 {% endblock %}

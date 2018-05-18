@@ -15,7 +15,7 @@ Including another URLconf
 """
 # import django_comments
 from django.conf.urls import url
-from .views import user_login, user_logout, user_index, user_my_info,user_register,user_my_info_headpic
+from .views import user_login, user_logout, user_index, user_index_inter, user_my_info,user_register,user_my_info_headpic
 
 urlpatterns = [
     url(r'login/', user_login, name='login'),
@@ -23,5 +23,6 @@ urlpatterns = [
     url(r'myinfo/(?P<username>.*)', user_my_info, name='myinfo'),
     url(r'myinfo_headpic/', user_my_info_headpic, name='myinfo_headpic'),
     url(r'userindex/(?P<username>.*)', user_index, name='userindex'),
+    url(r'userindexinter', user_index_inter, name='userindexinter'),
     url(r'register/', user_register, name='userregister')
 ]

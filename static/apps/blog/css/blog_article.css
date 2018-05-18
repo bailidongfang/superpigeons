@@ -1,3 +1,10 @@
+#article_panel p{
+    display: block;
+    -webkit-margin-before: 1em;
+    -webkit-margin-after: 1em;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+}
 .emojione{
     font-size: inherit;
     height: 2ex;
@@ -32,7 +39,6 @@ div.comment_bottom{
 div#new_comment{
     margin-top: 35px;
 }
-
 button#new_comment_btn{
     float: right;
     margin-bottom: 15px;

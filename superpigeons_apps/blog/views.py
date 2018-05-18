@@ -35,16 +35,60 @@ def blog_comment(request):
     return HttpResponse('success')
 
 
-def blog_write(request):
-    if request.method=='GET':
-        form = WriteArticle()
-        userinfo = UserInfo.objects.get(user__username='bailidf')
-        context = dict()
-        context['userinfo'] = userinfo
-        context['form'] = form
-        return render(request, 'blog_write.html', context)
-    if request.method=='POST':
-        
+def blog_edit(request, artid):
+    if artid == 'new':
+        # 新建博客
+        if request.method == 'GET':
+            form = WriteArticle()
+            userinfo = UserInfo.objects.get(user__username=request.user)
+            context = dict()
+            context['userinfo'] = userinfo
+            context['form'] = form
+            context['template_type'] = 'new'
+            return render(request, 'blog_write.html', context)
+        if request.method == 'POST':
+            writeform=WriteArticle(request.POST)
+            if writeform.is_valid():
+                # 提取form数据
+                title = writeform.cleaned_data.get("title")
+                text = writeform.cleaned_data.get("text")
+            try:
+                user = User.objects.get(username=request.user)
+                article = Article.objects.create(title=title, text=text, auther=user)
+            except Exception as e:
+                return HttpResponse(e)
+            return HttpResponse('success')
+    else:
+        # 修改博客
+        if request.method == 'GET':
+            # 获取博客数据
+            article = Article.objects.get(id=artid)
+            init = {
+                'title': article.title,
+                'text': article.text
+            }
+            form = WriteArticle(initial=init)
+            userinfo = UserInfo.objects.get(user__username=request.user)
+            context = dict()
+            context['userinfo'] = userinfo
+            context['form'] = form
+            context['template_type'] = artid
+            return render(request, 'blog_write.html', context)
+        if request.method == 'POST':
+            writeform=WriteArticle(request.POST)
+            if writeform.is_valid():
+                # 提取form数据
+                title = writeform.cleaned_data.get("title")
+                text = writeform.cleaned_data.get("text")
+            try:
+                user = User.objects.get(username=request.user)
+                article = Article.objects.get(id=artid)
+                article.title = title
+                article.text = text
+                article.save()
+            except Exception as e:
+                return HttpResponse(e)
+            return HttpResponse('success')
 
 
 def test(request):
