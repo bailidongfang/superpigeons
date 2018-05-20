@@ -33,6 +33,7 @@ def blog_comment(request):
         article = Article.objects.get(id=art_id)
         Comment.objects.create(comment_article=article, commenter=commenter, text=text)
     except Exception as e:
+        print(e)
         return HttpResponse(e)
     else:
         return HttpResponse('success')
@@ -59,6 +60,7 @@ def blog_edit(request, artid):
                 user = User.objects.get(username=request.user)
                 article = Article.objects.create(title=title, text=text, auther=user)
             except Exception as e:
+                print(e)
                 return HttpResponse(e)
             return HttpResponse('success')
     else:
@@ -90,6 +92,7 @@ def blog_edit(request, artid):
                 article.text = text
                 article.save()
             except Exception as e:
+                print(e)
                 return HttpResponse(e)
             return HttpResponse('success')
 

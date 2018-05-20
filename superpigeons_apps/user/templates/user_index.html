@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{% block nav_active_user%}active{% endblock %}
 {#{% block extend_static %}<link rel="stylesheet" type="text/css" href="{% static '/blog/css/blog_write.css' %}"/>{% endblock %}#}
 {#导航已选项#}
 {% block nav_active_blog%}active{% endblock %}
@@ -59,7 +60,7 @@
                             <h1>暂无博客</h1>
                         {% endfor %}
                     </div>
-                    <div id="tab_like" class="tab-pane fade" style="float: right">
+                    <div id="tab_like" class="tab-pane fade" style="padding: 20px">
                         <h1>暂无内容</h1>
                     </div>
                 </div>

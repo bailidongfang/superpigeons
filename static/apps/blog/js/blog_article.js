@@ -29,11 +29,17 @@ $(document).ready(function () {
             commenter_id:jsdata.commenter_id,
         }
         $.post(jsdata.comment_url,post_json,function (response) {
+            if(response=='success'){
             $('#infoModal h4').html('评论成功');
             $('#infoModal').modal('show');
             $('#infoModal').on('hide.bs.modal', function () {
                         window.location.reload()
             })
+            }
+            else{
+            $('#infoModal h4').html(response);
+            $('#infoModal').modal('show');
+            }
         })
     })
 })

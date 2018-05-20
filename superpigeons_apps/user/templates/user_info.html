@@ -86,6 +86,7 @@
                     <form action="{% url 'myinfo_headpic' %}" method="post" id="avatar_form" enctype="multipart/form-data">
                         {%csrf_token%}
                        <input style="display:none" type="file" class="avatar-input" id="avatar-input" name="avatar_file" accept=".jpg,.jpeg,.png">
+                       <input type="hidden" id="avatar_name" name="avatar_name">
                        <input type="hidden" id="avatar_x" name="avatar_x">
                        <input type="hidden" id="avatar_y" name="avatar_y">
                        <input type="hidden" id="avatar_width" name="avatar_width">
@@ -99,7 +100,8 @@
 
 <script>
 var jsdata = {
-    headpic_url:'{% url 'myinfo_headpic' %}'
+    headpic_url:'{% url 'myinfo_headpic' %}',
+    username:'{{ userinfo.username }}'
 }
 </script>
 

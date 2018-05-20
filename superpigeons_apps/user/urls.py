@@ -20,9 +20,9 @@ from .views import user_login, user_logout, user_index, user_index_inter, user_m
 urlpatterns = [
     url(r'login/', user_login, name='login'),
     url(r'logout/', user_logout, name='logout'),
+    url(r'register/', user_register, name='userregister'),
     url(r'myinfo/(?P<username>.*)', user_my_info, name='myinfo'),
     url(r'myinfo_headpic/', user_my_info_headpic, name='myinfo_headpic'),
     url(r'userindex/(?P<username>.*)', user_index, name='userindex'),
     url(r'userindexinter', user_index_inter, name='userindexinter'),
-    url(r'register/', user_register, name='userregister')
 ]

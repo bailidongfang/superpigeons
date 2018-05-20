@@ -4,6 +4,7 @@
     -webkit-margin-after: 1em;
     -webkit-margin-start: 0px;
     -webkit-margin-end: 0px;
+    word-break: break-all
 }
 .emojione{
     font-size: inherit;

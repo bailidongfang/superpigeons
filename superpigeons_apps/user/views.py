@@ -12,6 +12,21 @@ import random
 # Create your views here.
 
 
+def inter_permission(func):
+    def wrapper(*request):
+        if request.method == 'GET':
+            if str(request.user) == username:
+                return func(request, username)
+            else:
+                return redirect('/')
+        if request.method == 'POST':
+            print(request.user)
+            print(request.POST['avatar_name'])
+            return func(request, username)
+    return wrapper
+
+
+@inter_permission
 def user_my_info(request, username):
     userinfo = UserInfo.objects.get(username=username)
     context = dict()
@@ -20,9 +35,12 @@ def user_my_info(request, username):
     return render(request, 'user_info.html', context)
 
 
+@inter_permission
 def user_my_info_headpic(request):
     # 剪裁数据获取
-    username = request.user
+    print(request.user)
+    print(request.POST['avatar_name'])
+    username = request.POST['avatar_name']
     headpic_name = headpic_path+'/'+str(username)+'.jpg'
     file = request.FILES['avatar_file']
     top = int(float(request.POST['avatar_y']))
@@ -50,7 +68,6 @@ def user_index(request, username):
         context['permission'] = 'false'
     context['userinfo'] = userinfo
     context['articles'] = articles
-    print(context['permission'])
     return render(request, 'user_index.html', context)
 
 
