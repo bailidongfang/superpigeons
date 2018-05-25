@@ -30,7 +30,7 @@
                     <div style="margin-top: 50px">
                         <li class="list-unstyled">积分：{{ userinfo.score }}</li><br>
                         <li class="list-unstyled">头衔：{{ userinfo.level }}</li><br>
-                        <li class="list-unstyled">{{ userinfo.interest }}</li>
+{#                        <li class="list-unstyled">{{ userinfo.interest }}</li>#}
                     </div>
                 </div>
             </div>
@@ -48,7 +48,7 @@
                         {% for i in articles %}
                             <div id="{{ i.id }}">
                                 {{ i.title | safe}}
-{#                                {{ i.text  | striptags|safe|truncatechars:100|linebreaks }}#}
+                                {{ i.text  | striptags|safe|truncatechars:100|linebreaks }}
                                 {% if permission == 'ture' %}
                                 <span class="glyphicon glyphicon-trash article_delete" id="{{ i.id }}" style="float: right"></span>
                                 <span class="glyphicon glyphicon-edit article_edit" id="{{ i.id }}" style="float: right;margin-right: 10px"></span>
@@ -74,7 +74,7 @@
 var jsdata={
     csrf:'{{ csrf_token }}',
     inter_url:'{% url 'userindexinter' %}',
-    edit_url:'{% url 'edit' 'artid' %}',
+    edit_url:'{% url 'blogedit' 'modify' 'artid' %}',
 }
 </script>
 <script type="text/javascript" src="{% static "apps/user/js/user_index.js" %}"></script>

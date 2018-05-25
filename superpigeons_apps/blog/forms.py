@@ -1,6 +1,7 @@
 from django import forms
 from django.core.exceptions import ValidationError
 from ckeditor_uploader.fields import RichTextUploadingFormField
+from superpigeons_apps.blog.models import Tags
 from ckeditor.widgets import CKEditorWidget
 # from superpigeons_apps.user.models import UserInfo
 import re

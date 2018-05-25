@@ -1,4 +1,9 @@
 {% extends "base.html" %}
+{#加载静态文件#}
+{% load static %}
+{% block extend_static %}
+    <link rel="stylesheet" type="text/css" href="{% static '/apps/blog/css/blog_index.css' %}"/>
+{% endblock %}
 {#导航已选项#}
 {% block nav_active_blog%}active{% endblock %}
 {#巨幕图片路径#}
@@ -10,19 +15,71 @@
         <div class="col-md-8">
             <div class="panel panel-default">
                 <div class="panel-body">
-                    <ul class="list-group">
                     {% for i in article %}
-                        <li class="list-group-item">
-                            <a href="{% url 'article' i.id %}">{{ i.title }}</a>
-                            <p>{{ i.auther__userinfo__nickname }}</p>
-                        </li>
+                        <a href="{% url 'article' i.id %}" class="list-group-item">
+                            <h4 class="list-group-item-heading">{{ i.title }}</h4>
+                            {% for tag in i.tags.all %}
+                            <p style="color: red">{{ tag.tag_name }}</p>
+                            {% endfor %}
+                            {{ i.text  | striptags|safe|truncatechars:80|linebreaks }}
+                            <div style="font-size: 80%;display: inline-block;">
+                                <span class="glyphicon glyphicon-comment"></span> {{ i.comment_count }}
+                                <span class="glyphicon glyphicon-time" style="margin-left: 10px"></span> {{ i.mod_date }}
+                            </div>
+                        </a>
+                    {% empty %}
+                        <h1>暂无博客</h1>
                     {% endfor %}
-                    </ul>
+
+                    {# 分页部分 #}
+                    <div class="text-center">
+                        <ul class="pagination" style="margin-bottom: 5px">
+                            {#首页#}
+                            <li>
+                                <a href="{% url 'blog' %}?page=1">首页</a>
+                            </li>
+                            {# 上一页，这里需要用到has_previous方法判断是否有上一页 #}
+                            <li>
+                                <a href="{% url 'blog' %}?page=
+                                    {% if article.has_previous %}
+                                        {{article.previous_page_number}}
+                                    {% else %}
+                                        {{article.number}}
+                                    {% endif %}
+                                " aria-label="Previous">
+                                    <span aria-hidden="true">&laquo;</span>
+                                </a>
+                            </li>
+                            {# 遍历所有页码 #}
+                            {% for page in pages.get_page_range %}
+                                <li id="{{ page }}"><a href="{% url 'blog' %}?page={{page}}">{{page}}</a></li>
+                            {% endfor %}
+                            {# 下一页，这里需要用到has_next方法判断是否有下一页 #}
+                            <li>
+                                <a href="{% url 'blog' %}?page=
+                                    {% if article.has_next %}
+                                        {{article.next_page_number}}
+                                    {% else %}
+                                        {{article.number}}
+                                    {% endif %}
+                                " aria-label="Next">
+                                    <span aria-hidden="true">&raquo;</span>
+                                </a>
+                            </li>
+                            {#尾页#}
+                            <li>
+                                <a href="{% url 'blog' %}?page={{ pages.num_pages }}">尾页</a>
+                            </li>
+                        </ul>
+                    </div>
+{#                        <span class="center-block text-center" style=" margin-top: 0px">#}
+{#                            共{{pages.count}}篇博文,当前第{{article.number}}页,共{{pages.num_pages}}页#}
+{#                        </span>#}
                 </div>
             </div>
         </div>
 
-        <div class="col-md-4">
+        <div class="col-md-4 hidden-xs hidden-sm">
             <div class="panel panel-default">
                 <div class="panel-body">
                     Basic panel example
@@ -32,5 +89,7 @@
     </div>
 </div>
 
-
+<script>
+$(".pagination li[id='{{article.number}}']").addClass("active");
+</script>
 {% endblock %}

@@ -18,16 +18,50 @@
                 {% for i in form %}
                 {{ i }}
                 {% endfor %}
+                <div class="panel panel-default" style="padding: 20px;margin-top: 15px">
+                    <div class="checkbox">
+                        {% for tag in tags %}
+                        <label>
+                            <input type="checkbox" name="tags" value="{{ tag.id }}"><span class="label label-info">{{ tag.tag_name }}</span>
+                        </label>
+                        {% endfor %}
+                    </div>
+                    <p class="btn btn-primary" id="tags_edit">编辑标签</p>
+                </div>
             </form>
             <button class="btn btn-primary" id="submit_write" style="float: right;margin-top: 10px">提交</button>
         </div>
     </div>
 </div>
 
+{#模态框--标签编辑#}
+<div class="modal fade" id="tagsModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title" id="myModalLabel" style="">标签：</h4>
+			</div>
+			<div class="modal-body">
+                        {% for m in tags %}
+                            <label>
+                                <h4><span class="label label-info">{{ m.tag_name }}</span></h4>
+                            </label>
+                        {% endfor %}
+			</div>
+			<div class="modal-footer">
+                <input type="text" id="tags_edit_input">
+                <button type="button" class="btn btn-primary" id="tags_edit_add">新增</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">我知道了</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal -->
+</div>
+
 <script>
-var template_type = '{{ template_type }}'
 var jsdata={
-    comment_url:'{% url 'edit' template_type %}',
+    comment_url:'{% url 'blogedit' template_type artid %}',
+    tags_url:'{% url 'tagsedit' %}',
+    csrf:'{{ csrf_token }}',
 }
 </script>
 

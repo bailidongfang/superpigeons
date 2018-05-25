@@ -3,30 +3,18 @@ from django.http.response import HttpResponse
 from django.contrib import auth
 from django.contrib.auth.models import User
 from superpigeons_apps.user.forms import LoginForm, RegisterForm
-from superpigeons_apps.user.models import UserInfo,headpic_path
+from superpigeons_apps.user.models import UserInfo, headpic_path
 from superpigeons_apps.blog.models import Article
+from superpigeons_apps.blog.views import blog_edit
 from django.db import transaction
 from common.FromFtp import headpic_to_ftp
 from common.ImagePillow import crop_image
-import random
+from common.Decorator import user_inter_permission
 # Create your views here.
 
 
-def inter_permission(func):
-    def wrapper(*request):
-        if request.method == 'GET':
-            if str(request.user) == username:
-                return func(request, username)
-            else:
-                return redirect('/')
-        if request.method == 'POST':
-            print(request.user)
-            print(request.POST['avatar_name'])
-            return func(request, username)
-    return wrapper
-
-
-@inter_permission
+# 我的信息
+@user_inter_permission
 def user_my_info(request, username):
     userinfo = UserInfo.objects.get(username=username)
     context = dict()
@@ -35,12 +23,11 @@ def user_my_info(request, username):
     return render(request, 'user_info.html', context)
 
 
-@inter_permission
+# 我的信息-修改头像
+@user_inter_permission
 def user_my_info_headpic(request):
     # 剪裁数据获取
-    print(request.user)
-    print(request.POST['avatar_name'])
-    username = request.POST['avatar_name']
+    username = request.POST['permission_name']
     headpic_name = headpic_path+'/'+str(username)+'.jpg'
     file = request.FILES['avatar_file']
     top = int(float(request.POST['avatar_y']))
@@ -58,6 +45,7 @@ def user_my_info_headpic(request):
     return HttpResponse("success")
 
 
+# 我的主页
 def user_index(request, username):
     userinfo = UserInfo.objects.get(username=username)
     articles = Article.objects.filter(auther__username=username)
@@ -71,12 +59,14 @@ def user_index(request, username):
     return render(request, 'user_index.html', context)
 
 
+# 我的主页-删除博客
 def user_index_inter(request):
-    if request.POST['type']=='delete':
-        Article.objects.get(id=request.POST['article_id']).delete()
-    return HttpResponse('success')
+    if request.POST['type'] == 'delete':
+        rst = blog_edit(request, **{'ftype': 'delete', 'artid': request.POST['article_id']})
+        return HttpResponse(rst)
 
 
+# 登陆
 def user_login(request):
     if request.method == 'GET':
         context = dict()
@@ -99,12 +89,14 @@ def user_login(request):
             return render(request, 'user_login.html', context)
 
 
+# 注销
 def user_logout(request):
     if request.method == 'GET':
         auth.logout(request)
         return redirect('index')
 
 
+# 注册
 def user_register(request):
     if request.method == 'GET':
         context = dict()

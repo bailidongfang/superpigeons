@@ -53,10 +53,10 @@
                     <span class="input-group-addon">昵称</span>
                     <input type="text" class="form-control" value="{{ userinfo.nickname }}">
                 </div>
-                <div class="input-group">
-                    <span class="input-group-addon">兴趣</span>
-                    <input type="text" class="form-control" value="{{ userinfo.interest }}">
-                </div>
+{#                <div class="input-group">#}
+{#                    <span class="input-group-addon">兴趣</span>#}
+{#                    <input type="text" class="form-control" value="{{ userinfo.interest }}">#}
+{#                </div>#}
             </div>
             <div id="tab_headpic" class="tab-pane fade">
                     {#这里引用杨老师的教程http://yshblog.com/blog/133#}
@@ -86,7 +86,7 @@
                     <form action="{% url 'myinfo_headpic' %}" method="post" id="avatar_form" enctype="multipart/form-data">
                         {%csrf_token%}
                        <input style="display:none" type="file" class="avatar-input" id="avatar-input" name="avatar_file" accept=".jpg,.jpeg,.png">
-                       <input type="hidden" id="avatar_name" name="avatar_name">
+                       <input type="hidden" id="permission_name" name="permission_name">
                        <input type="hidden" id="avatar_x" name="avatar_x">
                        <input type="hidden" id="avatar_y" name="avatar_y">
                        <input type="hidden" id="avatar_width" name="avatar_width">

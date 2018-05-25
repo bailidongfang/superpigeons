@@ -15,7 +15,7 @@ $(document).ready(function () {
             preview: ".avatar-preview",//预览区域
             crop: function (e) {
                 //返回图片编辑相关数据
-                $('#avatar_name').val(jsdata.username)
+                $('#permission_name').val(jsdata.username)
                 $('#avatar_x').val(e.detail.x);
                 $('#avatar_y').val(e.detail.y);
                 $('#avatar_width').val(e.detail.width);
@@ -49,6 +49,14 @@ $(document).ready(function () {
                 $form.ajaxSubmit(function (rst) {
                         if (rst=='success'){
                             $('#infoModal h4').html('上传成功')
+                            $('#infoModal').modal('show')
+                            $('#infoModal').on('hide.bs.modal', function () {
+                            window.location.reload()
+                            $(this).unbind()
+                            })
+                        }
+                        else {
+                            $('#infoModal h4').html(rst)
                             $('#infoModal').modal('show')
                         }
                         // $("#auther_info_headpic").attr('src','/outlib/'+headpicaddress)

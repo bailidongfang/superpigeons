@@ -25,3 +25,7 @@ body{
   height: 96px;
   width: 96px;
 }
+
+li{
+    list-style-type: none;
+}

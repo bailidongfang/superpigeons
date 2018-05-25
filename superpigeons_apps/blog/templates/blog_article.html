@@ -34,7 +34,10 @@
             <div id="article" class="panel panel-default">
                 <div class="panel-body">
                     <h2>{{ article.title}}</h2>
-                    <p style="text-align: right">{{ article.add_date }}</p>
+                    <p style="text-align: right;margin-left: 20px">
+                        <span>浏览次数:{{ article.seen_count }}</span>
+                        <span style="margin-left: 20px">{{ article.add_date }}</span>
+                    </p>
                     <div id="article_panel" style="display: block">{{ article.text | safe }}</div>
                 </div>
             </div>
@@ -45,7 +48,7 @@
                     {% for i in comment %}
                         <div class="row" style="padding-top: 20px">
                             <div class="col-xs-4 col-sm-2">
-                                <img class="comment_headpic center-block" src="{% if userinfo.headpic %}{{ userinfo.headpic.url }}{% else %}{% static 'base/img/autoheadpic.jpg'%}{% endif %}">
+                                <img class="comment_headpic center-block" src="{% if i.commenter.userinfo.headpic %}{{ i.commenter.userinfo.headpic.url }}{% else %}{% static 'base/img/autoheadpic.jpg'%}{% endif %}">
                                 <p style="text-align: center">{{ i.commenter.userinfo.nickname }}</p>
                             </div>
                             <div class="col-xs-8 col-sm-10">

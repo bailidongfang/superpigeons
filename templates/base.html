@@ -52,7 +52,7 @@
                         <a  style="min-width: 120px;text-align: center" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><span class="glyphicon glyphicon-user" aria-hidden="true"></span> {{ user.username }}<span class="caret"></span></a>
                         <ul class="dropdown-menu" style="min-width:100%;">
                             <li><a href="{% url 'userindex' user.username %}"><span class="glyphicon glyphicon-home"></span> 我的主页</a></li><li class="divider"></li>
-                            <li><a href="{% url 'edit' 'new' %}"><span class="glyphicon glyphicon-edit"></span> 新的博客</a></li><li class="divider"></li>
+                            <li><a href="{% url 'blogedit' 'add' 'new' %}"><span class="glyphicon glyphicon-edit"></span> 新的博客</a></li><li class="divider"></li>
                             <li><a href="{% url 'logout' %}"><span class="glyphicon glyphicon-off"></span> 退出</a></li>
                         </ul>
                     </li>
@@ -75,6 +75,23 @@
     <img src="{% block backgroundpic %}{% endblock %}" class="img-responsive center-block ">
 </div>
 
+<!-- 模态框（Modal）错误 -->
+<div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h4 class="modal-title" id="myModalLabel" style="margin: 20px">
+				</h4>
+			</div>
+{#			<div class="modal-body">#}
+{#				在这里添加一些文本#}
+{#			</div>#}
+			<div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">我知道了</button>
+			</div>
+		</div><!-- /.modal-content -->
+	</div><!-- /.modal -->
+</div>
 <!-- 模态框（Modal）提示 -->
 <div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-dialog">

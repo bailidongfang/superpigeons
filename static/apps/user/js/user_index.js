@@ -16,7 +16,8 @@ $(document).ready(function () {
                     })
                 }
                 else {
-                    alert(rst)
+                    $('#infoModal h4').html(rst);
+                    $('#infoModal').modal('show');
                 }
             })
             $(this).unbind()

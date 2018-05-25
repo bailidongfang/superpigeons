@@ -13,3 +13,8 @@ input#title{
 div.container{
     margin-top: 100px;
  }
+
+
+span.label{
+    padding:.3em .6em .3em;
+}

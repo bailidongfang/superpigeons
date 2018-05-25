@@ -1,0 +1,26 @@
+.icon_comment::before{
+    content: url("/static/apps/blog/img/icon_seen.png")
+}
+.icon_seen::before{
+    content: url("/static/apps/blog/img/icon_comment.png")
+}
+
+.panel-body p{
+    display: block;
+    -webkit-margin-before: 1em;
+    -webkit-margin-after: 1em;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+    word-break: break-all;
+    font-size: small;
+}
+
+.panel-body h4{
+    display: block;
+    -webkit-margin-before: 1em;
+    -webkit-margin-after: 1em;
+    -webkit-margin-start: 0px;
+    -webkit-margin-end: 0px;
+    word-break: break-all;
+
+}
