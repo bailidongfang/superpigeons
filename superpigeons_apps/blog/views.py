@@ -69,7 +69,7 @@ def blog_edit(request, ftype, artid):
         if request.method == 'GET':
             form = WriteArticle()
             userinfo = UserInfo.objects.get(user__username=request.user)
-            tags = Tags.objects.filter(Q(is_common=1)|Q(commenter__userinfo__username=request.user))
+            tags = Tags.objects.filter(Q(is_common=1) | Q(commenter__userinfo__username=request.user))
             context = dict()
             context['userinfo'] = userinfo
             context['form'] = form
@@ -87,9 +87,8 @@ def blog_edit(request, ftype, artid):
                 try:
                     user = User.objects.get(username=request.user)
                     article = Article.objects.create(title=title, text=text, auther=user)
+                    article.tags.clear()
                     for i in Tags.objects.filter(id__in=tags_id):
-                        print(type(i))
-                        print(i.tag_name)
                         article.tags.add(i)
                 except Exception as e:
                     traceback.print_exc()
@@ -109,13 +108,17 @@ def blog_edit(request, ftype, artid):
             }
             form = WriteArticle(initial=init)
             userinfo = UserInfo.objects.get(user__username=request.user)
+            tags = Tags.objects.filter(Q(is_common=1) | Q(commenter__userinfo__username=request.user))
             context = dict()
             context['userinfo'] = userinfo
             context['form'] = form
             context['template_type'] = 'modify'
             context['artid'] = artid
+            context['article'] = article
+            context['tags'] = tags
             return render(request, 'blog_write.html', context)
         if request.method == 'POST':
+            tags_id = request.POST.getlist('tags')
             writeform = WriteArticle(request.POST)
             if writeform.is_valid():
                 # 提取form数据
@@ -126,6 +129,9 @@ def blog_edit(request, ftype, artid):
                 article = Article.objects.get(id=artid)
                 article.title = title
                 article.text = text
+                article.tags.clear()
+                for i in Tags.objects.filter(id__in=tags_id):
+                    article.tags.add(i)
                 article.save()
             except Exception as e:
                 print(e)
@@ -144,8 +150,11 @@ def blog_edit(request, ftype, artid):
 def tags_edit(request):
     print(request.POST)
     commenter = User.objects.get(username=request.user)
-    Tags.objects.create(tag_name=request.POST['tag_name'], is_common=0, commenter=commenter)
-    tags = Tags.objects.filter(is_common=1, commenter=commenter)
+    if Tags.objects.filter(tag_name=request.POST['tag_name']).exists():
+        return HttpResponse(status=502, content='该标签已存在')
+    else:
+        newtag = Tags.objects.create(tag_name='t测试', is_common=0, commenter=commenter)
+    # tags = Tags.objects.filter(Q(is_common=1) | Q(commenter__userinfo__username=request.user))
     dic = dict()
-    dic.pop('key', 'ff')
+    dic[newtag.id] = newtag.tag_name
     return HttpResponse(json.dumps(dic), content_type="application/json")

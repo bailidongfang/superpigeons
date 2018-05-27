@@ -19,7 +19,7 @@
                         <a href="{% url 'article' i.id %}" class="list-group-item">
                             <h4 class="list-group-item-heading">{{ i.title }}</h4>
                             {% for tag in i.tags.all %}
-                            <p style="color: red">{{ tag.tag_name }}</p>
+                                <span class="label label-info">{{ tag.tag_name }}</span>
                             {% endfor %}
                             {{ i.text  | striptags|safe|truncatechars:80|linebreaks }}
                             <div style="font-size: 80%;display: inline-block;">

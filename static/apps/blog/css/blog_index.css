@@ -24,3 +24,7 @@
     word-break: break-all;
 
 }
+
+span.label{
+    padding:.3em .6em .3em;
+}

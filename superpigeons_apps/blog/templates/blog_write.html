@@ -1,8 +1,12 @@
 {% extends "base.html" %}
 {% load static %}
 {% block extend_static %}
+    <link rel="stylesheet" type="text/css" href="{% static '/bootstrap-3.3.7-dist/css/bootstrap-tagsinput.css' %}"/>
     <link rel="stylesheet" type="text/css" href="{% static '/apps/blog/css/blog_write.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static '/icheck/skins/square/blue.css' %}"/>
+    <script src="{% static '/icheck/icheck.min.js' %}"></script>
     <script src="{% static '/base/js/jquery-form.js' %}"></script>
+    <script src="{% static '/bootstrap-3.3.7-dist/js/bootstrap-tagsinput.min.js' %}"></script>
 {% endblock %}
 {% block nav_active_blog%}active{% endblock %}
 {% block body %}
@@ -19,20 +23,32 @@
                 {{ i }}
                 {% endfor %}
                 <div class="panel panel-default" style="padding: 20px;margin-top: 15px">
-                    <div class="checkbox">
+                    <div style="overflow: hidden">
+                        <p>博客标签</p>
                         {% for tag in tags %}
-                        <label>
-                            <input type="checkbox" name="tags" value="{{ tag.id }}"><span class="label label-info">{{ tag.tag_name }}</span>
+                        <label class="col-sm-2 col-mx-3 tags_lable" style="margin-top: 15px;">
+                            <input type="checkbox" class="icheck_input"
+                            {#判断是否选中#}
+                            {% for checked_tag in article.tags.all %}
+                                {% if checked_tag.tag_name == tag.tag_name %}
+                                    checked
+                                {% endif %}
+                            {% endfor %}
+                            name="tags" value="{{ tag.id }}">
+                            <span style="margin-left: 5px;font-weight: normal">{{ tag.tag_name }}</span>
                         </label>
                         {% endfor %}
                     </div>
-                    <p class="btn btn-primary" id="tags_edit">编辑标签</p>
+
                 </div>
             </form>
-            <button class="btn btn-primary" id="submit_write" style="float: right;margin-top: 10px">提交</button>
+            <button class="btn btn-primary" id="submit_write" style="float: right;margin-top: 10px;margin-left: 10px">提交</button>
+            <p class="btn btn-primary" id="tags_edit" style="float: right;margin-top: 10px">编辑标签</p>
+
         </div>
     </div>
 </div>
+
 
 {#模态框--标签编辑#}
 <div class="modal fade" id="tagsModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -42,16 +58,17 @@
 				<h4 class="modal-title" id="myModalLabel" style="">标签：</h4>
 			</div>
 			<div class="modal-body">
-                        {% for m in tags %}
-                            <label>
-                                <h4><span class="label label-info">{{ m.tag_name }}</span></h4>
-                            </label>
-                        {% endfor %}
+{#                        {% for m in tags %}#}
+{#                            <label>#}
+{#                                <h4><span class="label label-info">{{ m.tag_name }}</span></h4>#}
+{#                            </label>#}
+{#                        {% endfor %}#}
+                    <input id="tags_edit_input" name="tags" type="text">
 			</div>
 			<div class="modal-footer">
-                <input type="text" id="tags_edit_input">
+                <input class="input-group" id="tags_edit_add_input" placeholder="新标签">
                 <button type="button" class="btn btn-primary" id="tags_edit_add">新增</button>
-                <button type="button" class="btn btn-primary" data-dismiss="modal">我知道了</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">取消</button>
 			</div>
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal -->

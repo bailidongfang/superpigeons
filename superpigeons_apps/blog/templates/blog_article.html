@@ -33,11 +33,17 @@
             {#文章#}
             <div id="article" class="panel panel-default">
                 <div class="panel-body">
-                    <h2>{{ article.title}}</h2>
-                    <p style="text-align: right;margin-left: 20px">
-                        <span>浏览次数:{{ article.seen_count }}</span>
-                        <span style="margin-left: 20px">{{ article.add_date }}</span>
-                    </p>
+                    <h2 style="margin-bottom: 20px;">{{ article.title}}</h2>
+                    <div class="col-sm-9 col-xs-6"  style="padding-left: 0;">
+                            {% for tag in article.tags.all %}
+                                <h3 style="display:inline "><span class="label label-info">{{ tag.tag_name }}</span></h3>
+                            {% endfor %}
+                    </div>
+                    <div class="col-sm-offset-9 col-xs-offset-6">
+                        <span>发布时间: {{ article.add_date }}</span><br>
+                        <span style="margin-right: 5px">阅读({{ article.seen_count }})</span>
+                        <span>评论({{ comment.count }})</span>
+                    </div>
                     <div id="article_panel" style="display: block">{{ article.text | safe }}</div>
                 </div>
             </div>

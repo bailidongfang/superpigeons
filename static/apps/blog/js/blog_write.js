@@ -1,4 +1,37 @@
 $(document).ready(function () {
+    //icheck
+    $('.icheck_input').iCheck({
+    checkboxClass: 'icheckbox_square-blue',
+    radioClass: 'iradio_square-blue'
+    });
+    //tagsinput
+    $('input#tags_edit_input').tagsinput({
+      allowDuplicates: false,
+      itemValue: 'id',
+      itemText: 'name'
+    });
+    function tags_input() {
+        $.each($('.tags_lable'),function () {
+        let tag_name=$(this).children('span').html()
+        let tag_id=$(this).children('div').children('input').val()
+        $('input#tags_edit_input').tagsinput('add', {id:tag_id,name:tag_name});
+        })
+    }
+    tags_input()
+    $('input#tags_edit_input').on('beforeItemRemove', function(event) {
+        var tag = event.item;
+        // Do some processing here
+        var tag_id = tag.id;
+        var tag_name = tag.name
+        // event.cancel = true
+        $.each($('.tags_lable'),function () {
+            if($(this).children('div').children('input').val()==tag_id){
+                $(this).remove()
+            }
+        })
+
+    });
+    //提交博客按钮
     $("#submit_write").click(function () {
         //禁用按钮
         $(this).prop('disabled', true);
@@ -38,11 +71,19 @@ $(document).ready(function () {
     })
 
     $("#tags_edit_add").click(function () {
-        $.post(jsdata.tags_url,{csrfmiddlewaretoken:jsdata.csrf,tag_name:$('#tags_edit_input').val()},function (rst) {
-            rst.each(function (d) {
-                alert(d)
-            })
-        })
+        new_tag = $('#tags_edit_add_input')
+        $('input#tags_edit_input').tagsinput('add', 'ff');
+        // $.post(jsdata.tags_url,
+        //        {csrfmiddlewaretoken:jsdata.csrf,
+        //         tag_name:'dddd',
+        //        },
+        //        function (rst) {
+        //             if(rst)
+        //             $.each(rst,function (key,value) {
+        //                 alert(key+':'+value)
+        //             })
+        //        })
+
     })
 
 })
