@@ -22,9 +22,28 @@
         {#左侧栏#}
         <div class="col-sm-3 hidden-xs">
             <div class="panel panel-default">
+                <div class="panel-heading">作者信息:</div>
                 <div class="panel-body">
-                    <a href="{% url 'userindex' userinfo.username %}">{{ userinfo.nickname }}</a>
-{#                  <img src="{{ userinfo.headpic.url }}">#}
+                    <div>
+                        <a href="{% url 'userindex' userinfo.username %}" class="commonheadpic center-block">
+                            <img style="width: 96px; height: 96px;" src="{% if userinfo.headpic %}{{ userinfo.headpic.url }}{% else %}{% static 'base/img/autoheadpic.jpg'%}{% endif %}">
+                        </a>
+                        <h3 style="text-align: center">{{ userinfo.nickname }}</h3>
+                        <li class="list-unstyled" style="text-align: center">{{ userinfo.sign }}</li>
+                    </div>
+                    <div style="margin-top: 30px">
+                        <li style="border: 1px solid #e3e3e3;padding: 9px;border-radius: 4px">积分：{{ userinfo.score }}</li><br>
+                        <li style="border: 1px solid #e3e3e3;padding: 9px;border-radius: 4px">头衔：{{ userinfo.level }}</li><br>
+{#                        <li class="list-unstyled">{{ userinfo.interest }}</li>#}
+                    </div>
+                </div>
+            </div>
+            <div class="panel panel-default" style="margin-top: 30px">
+                <div class="panel-heading">作者其他博客:</div>
+                <div class="panel-body">
+                    {% for i in other_articles %}
+                        <a href="{% url 'article' i.id %}"><p>{{ i.title }}</p></a>
+                    {% endfor %}
                 </div>
             </div>
         </div>

@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 {% load static %}
 {% block extend_static %}
-    <link rel="stylesheet" type="text/css" href="{% static '/bootstrap-3.3.7-dist/css/bootstrap-tagsinput.css' %}"/>
+{#    <link rel="stylesheet" type="text/css" href="{% static '/bootstrap-3.3.7-dist/css/bootstrap-tagsinput.css' %}"/>#}
     <link rel="stylesheet" type="text/css" href="{% static '/apps/blog/css/blog_write.css' %}"/>
     <link rel="stylesheet" type="text/css" href="{% static '/icheck/skins/square/blue.css' %}"/>
     <script src="{% static '/icheck/icheck.min.js' %}"></script>
     <script src="{% static '/base/js/jquery-form.js' %}"></script>
-    <script src="{% static '/bootstrap-3.3.7-dist/js/bootstrap-tagsinput.min.js' %}"></script>
+{#    <script src="{% static '/bootstrap-3.3.7-dist/js/bootstrap-tagsinput.min.js' %}"></script>#}
 {% endblock %}
 {% block nav_active_blog%}active{% endblock %}
 {% block body %}
@@ -23,10 +23,10 @@
                 {{ i }}
                 {% endfor %}
                 <div class="panel panel-default" style="padding: 20px;margin-top: 15px">
-                    <div style="overflow: hidden">
+                    <div id="blog_tags" style="overflow: hidden">
                         <p>博客标签</p>
                         {% for tag in tags %}
-                        <label class="col-sm-2 col-mx-3 tags_lable" style="margin-top: 15px;">
+                        <label class="col-sm-3 col-mx-4 tags_lable" style="margin-top: 15px;">
                             <input type="checkbox" class="icheck_input"
                             {#判断是否选中#}
                             {% for checked_tag in article.tags.all %}
@@ -35,7 +35,7 @@
                                 {% endif %}
                             {% endfor %}
                             name="tags" value="{{ tag.id }}">
-                            <span style="margin-left: 5px;font-weight: normal">{{ tag.tag_name }}</span>
+                            <span class="tag_name" style="margin-left: 5px;font-weight: normal">{{ tag.tag_name }}</span>
                         </label>
                         {% endfor %}
                     </div>
@@ -51,33 +51,44 @@
 
 
 {#模态框--标签编辑#}
-<div class="modal fade" id="tagsModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="tagsModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 				<h4 class="modal-title" id="myModalLabel" style="">标签：</h4>
 			</div>
 			<div class="modal-body">
-{#                        {% for m in tags %}#}
-{#                            <label>#}
-{#                                <h4><span class="label label-info">{{ m.tag_name }}</span></h4>#}
-{#                            </label>#}
-{#                        {% endfor %}#}
-                    <input id="tags_edit_input" name="tags" type="text">
+                <div id="tags_edit_div" style="display: table"></div>
+                    {#tagsinput#}
+{#                    <input id="tags_edit_input" name="tags" type="text" hidden>#}
 			</div>
 			<div class="modal-footer">
-                <input class="input-group" id="tags_edit_add_input" placeholder="新标签">
-                <button type="button" class="btn btn-primary" id="tags_edit_add">新增</button>
-                <button type="button" class="btn btn-primary" data-dismiss="modal">取消</button>
+                {#新增输入框组#}
+                <div class="input-group" style="width: 300px;margin:10px 0;float: left">
+                    <input type="text" class="form-control input-sm" id="tags_edit_add_input" placeholder="标签名字">
+                    <span class="input-group-btn">
+                        <button class="btn btn-default btn-sm" id="tags_edit_add">新增标签</button>
+                    </span>
+                </div>
+                <button type="button" class="btn btn-primary btn-sm" id="tags_edit_commit" style="margin:10px 0;">确认</button>
+                <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal" style="margin:10px 0;">取消</button>
 			</div>
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal -->
 </div>
 
 <script>
+{#创建已用tag的数组#}
+used_tags=[];
+{% for i in used_tags %}
+    used_tags.push('{{ i }}');
+{% endfor %}
+
 var jsdata={
     comment_url:'{% url 'blogedit' template_type artid %}',
     tags_url:'{% url 'tagsedit' %}',
+    used_tag:used_tags,
     csrf:'{{ csrf_token }}',
 }
 </script>

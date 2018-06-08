@@ -13,7 +13,12 @@ input#title{
 div.container{
     margin-top: 100px;
  }
-
-
-
-/*checkbox样式*/
+/*标签样式*/
+.label{
+    padding:.3em .6em .4em;
+    font-size:100%
+}
+span.tag_name{
+    font-size: 90%;
+    font-weight: 200;
+}

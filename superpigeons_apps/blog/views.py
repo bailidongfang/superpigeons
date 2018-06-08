@@ -14,10 +14,14 @@ import json
 # 博客主页
 def blog_index(request):
     article = Article.objects.all().order_by('-mod_date')
+    top_seen_article = Article.objects.all().values('id', 'title', 'seen_count').order_by('-seen_count')[:10]
     current_page = request.GET.get("page", 1)
     pages = NewPaginator(article, 10)
-    # article = pages.page(current_page)
+    article = pages.page(current_page)
+    tags = Tags.objects.all()
     context = dict()
+    context['tags'] = tags
+    context['top_seen_article'] = top_seen_article
     context['article'] = article
     context['pages'] = pages
     return render(request, 'blog_index.html', context)
@@ -29,6 +33,7 @@ def blog_article(request, artid):
     article = Article.objects.get(id=artid)
     comment = Comment.objects.filter(comment_article__id=artid)
     userinfo = UserInfo.objects.get(user_id=article.auther_id)
+    other_articles = Article.objects.filter(auther=article.auther_id).exclude(id=artid).values('title', 'id').order_by("-seen_count")[:10]
     # 判断是否浏览过
     if ArticleSeen.objects.filter(seen_csrf=seener_csrf,seen_article=article).exists():
         pass
@@ -37,6 +42,7 @@ def blog_article(request, artid):
         article.seen_count = ArticleSeen.objects.filter(seen_article=article).count()
         article.save()
     context = dict()
+    context['other_articles'] = other_articles
     context['article'] = article
     context['userinfo'] = userinfo
     context['comment'] = comment
@@ -70,7 +76,16 @@ def blog_edit(request, ftype, artid):
             form = WriteArticle()
             userinfo = UserInfo.objects.get(user__username=request.user)
             tags = Tags.objects.filter(Q(is_common=1) | Q(commenter__userinfo__username=request.user))
+            articles = Article.objects.filter(auther=request.user)
+            used_tags = []
+            # 从已写的博客中找到已用的tag
+            for i in articles:
+                for t in i.tags.all():
+                    used_tags.append(t.id)
+            # 去重
+            used_tags = list(set(used_tags))
             context = dict()
+            context['used_tags'] = used_tags
             context['userinfo'] = userinfo
             context['form'] = form
             context['template_type'] = 'add'
@@ -109,7 +124,16 @@ def blog_edit(request, ftype, artid):
             form = WriteArticle(initial=init)
             userinfo = UserInfo.objects.get(user__username=request.user)
             tags = Tags.objects.filter(Q(is_common=1) | Q(commenter__userinfo__username=request.user))
+            articles = Article.objects.filter(auther=request.user)
+            used_tags = []
+            # 从已写的博客中找到已用的tag
+            for i in articles:
+                for t in i.tags.all():
+                    used_tags.append(t.id)
+            # 去重
+            used_tags = list(set(used_tags))
             context = dict()
+            context['used_tags'] = used_tags
             context['userinfo'] = userinfo
             context['form'] = form
             context['template_type'] = 'modify'
@@ -141,20 +165,28 @@ def blog_edit(request, ftype, artid):
         try:
             Article.objects.get(id=artid).delete()
         except Exception as e:
-            print(e)
+            traceback.print_exc()
             return HttpResponse(e)
-        return HttpResponse('success')
+        else:
+            return HttpResponse('success')
 
 
 # 新增删除标签
 def tags_edit(request):
-    print(request.POST)
     commenter = User.objects.get(username=request.user)
-    if Tags.objects.filter(tag_name=request.POST['tag_name']).exists():
-        return HttpResponse(status=502, content='该标签已存在')
-    else:
-        newtag = Tags.objects.create(tag_name='t测试', is_common=0, commenter=commenter)
-    # tags = Tags.objects.filter(Q(is_common=1) | Q(commenter__userinfo__username=request.user))
-    dic = dict()
-    dic[newtag.id] = newtag.tag_name
-    return HttpResponse(json.dumps(dic), content_type="application/json")
+    if request.POST['type'] == 'add':
+        if Tags.objects.filter(tag_name=request.POST['tag_name']).exists():
+            return HttpResponse('该标签已存在')
+        else:
+            try:
+                newtag = Tags.objects.create(tag_name=request.POST['tag_name'], is_common=0, commenter=commenter)
+                dic = dict()
+                dic[newtag.id] = newtag.tag_name
+            except Exception as e:
+                traceback.print_exc()
+                return HttpResponse(e)
+            else:
+                return HttpResponse(json.dumps(dic), content_type="application/json")
+    if request.POST['type'] == 'delete':
+        Tags.objects.filter(id=request.POST['tag_id']).delete()
+        return HttpResponse('success')

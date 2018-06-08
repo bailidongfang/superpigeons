@@ -9,9 +9,12 @@
     <link rel="icon" href="{% static '/base/img/pigones.png' %}"/>
     {#模板共用静态文件#}
     <link rel="stylesheet" type="text/css" href="{% static '/bootstrap-3.3.7-dist/css/bootstrap.min.css' %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static '/bootstrap-3.3.7-dist/css/bootstrap-dialog.min.css' %}"/>
     <link rel="stylesheet" type="text/css" href="{% static '/base/css/base.css' %}"/>
     <script src="{% static '/base/js/jquery-3.2.1.js' %}"></script>
     <script src="{% static '/bootstrap-3.3.7-dist/js/bootstrap.min.js' %}"></script>
+    <script src="{% static '/bootstrap-3.3.7-dist/js/bootstrap-dialog.min.js' %}"></script>
+    <script src="{% static '/base/js/base.js' %}"></script>
     {#子页面需要的静态文件#}
     {% block extend_static %}{% endblock %}
 
@@ -87,16 +90,17 @@
 {#				在这里添加一些文本#}
 {#			</div>#}
 			<div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-dismiss="modal">我知道了</button>
+                <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal">我知道了</button>
 			</div>
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal -->
 </div>
 <!-- 模态框（Modal）提示 -->
-<div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="infoModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 				<h4 class="modal-title" id="myModalLabel" style="margin: 20px">
 				</h4>
 			</div>
@@ -104,16 +108,17 @@
 {#				在这里添加一些文本#}
 {#			</div>#}
 			<div class="modal-footer">
-                <button type="button" class="btn btn-primary" data-dismiss="modal">我知道了</button>
+                <button type="button" class="btn btn-primary btn-sm" data-dismiss="modal">我知道了</button>
 			</div>
 		</div><!-- /.modal-content -->
 	</div><!-- /.modal -->
 </div>
 <!-- 模态框（Modal）选择 -->
-<div class="modal fade" id="selectModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="selectModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
 				<h4 class="modal-title" id="myModalLabel" style="margin: 20px">
 				</h4>
 			</div>
@@ -126,5 +131,15 @@
 </div>
 {#body#}
 {% block body %}{% endblock %}
+
+{#modal滚动条问题#}
+<script type="text/javascript">
+    window.onload = function() {
+        $('.modal').on('hide.bs.modal', function() {
+            $("body").removeClass('modal-open');
+            $("body").css('padding-right','0px');
+        })
+    };
+</script>
 </body>
 </html>

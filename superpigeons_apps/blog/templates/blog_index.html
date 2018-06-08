@@ -13,20 +13,48 @@
 <div class="container">
     <div class="row">
         <div class="col-md-8">
+{#        筛选排序#}
+{#            <div class="panel panel-default" style="margin-bottom: 20px">#}
+{#                <div class="panel-body">#}
+{#                    <li class="dropdown" style="float: left">#}
+{#                        <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">标签 <span class="caret"></span></button>#}
+{#                        <ul class="dropdown-menu">#}
+{#                            {% for i in tags %}#}
+{#                                <li style="margin-bottom: 5px"><a>{{ i.tag_name }}</a></li>#}
+{#                            {% endfor %}#}
+{#                        </ul>#}
+{#                    </li>#}
+{#                    <li class="dropdown" style="float: left;margin-left: 20px">#}
+{#                        <button class="btn btn-default dropdown-toggle" data-toggle="dropdown">排序 <span class="caret"></span></button>#}
+{#                        <ul class="dropdown-menu" style="text-align: center">#}
+{#                            <li style="margin-bottom: 5px"><a>按发布时间从远到近</a></li>#}
+{#                            <li style="margin-bottom: 5px"><a>按发布时间从近到远</a></li>#}
+{#                            <li style="margin-bottom: 5px"><a>按修改时间从远到近</a></li>#}
+{#                            <li><a>按修改时间从近到远</a></li>#}
+{#                        </ul>#}
+{#                    </li>#}
+{#                </div>#}
+{#            </div>#}
             <div class="panel panel-default">
+                <div class="panel-heading">博客列表</div>
                 <div class="panel-body">
                     {% for i in article %}
-                        <a href="{% url 'article' i.id %}" class="list-group-item">
-                            <h4 class="list-group-item-heading">{{ i.title }}</h4>
-                            {% for tag in i.tags.all %}
-                                <span class="label label-info">{{ tag.tag_name }}</span>
-                            {% endfor %}
-                            {{ i.text  | striptags|safe|truncatechars:80|linebreaks }}
-                            <div style="font-size: 80%;display: inline-block;">
-                                <span class="glyphicon glyphicon-comment"></span> {{ i.comment_count }}
-                                <span class="glyphicon glyphicon-time" style="margin-left: 10px"></span> {{ i.mod_date }}
+                        <div id="{{ i.id }}" class="row">
+                            <div class="col-xs-12">
+                                <a href="{% url 'article' i.id %}" class="list-group-item">
+                                    <h4 class="list-group-item-heading">{{ i.title }}</h4>
+                                    {% for tag in i.tags.all %}
+                                        <span class="label label-info">{{ tag.tag_name }}</span>
+                                    {% endfor %}
+                                    {{ i.text  | striptags|safe|truncatechars:80|linebreaks }}
+                                    <div style="font-size: 80%;display: inline-block;">
+                                        <span class="glyphicon glyphicon-comment"></span> {{ i.comment_count }}
+                                        <span class="glyphicon glyphicon-time" style="margin-left: 10px"></span> {{ i.mod_date }}
+                                    </div>
+                                </a>
                             </div>
-                        </a>
+                        </div>
+                        <br>
                     {% empty %}
                         <h1>暂无博客</h1>
                     {% endfor %}
@@ -81,8 +109,20 @@
 
         <div class="col-md-4 hidden-xs hidden-sm">
             <div class="panel panel-default">
+                <div class="panel-heading"><span class="glyphicon glyphicon-arrow-up"></span> 浏览排行：</div>
                 <div class="panel-body">
-                    Basic panel example
+                    {% for i in top_seen_article %}
+                        <a href="{% url 'article' i.id %}"><p>{{ i.title |truncatechars:20 }}</p></a>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="panel panel-default" style="margin-top: 30px">
+                <div class="panel-heading"><span class="glyphicon glyphicon-thumbs-up"></span> 推荐：</div>
+                <div class="panel-body">
+                    {% for i in top_seen_article %}
+                        <a href="{% url 'article' i.id %}"><p>{{ i.title |truncatechars:20 }}</p></a>
+                    {% endfor %}
                 </div>
             </div>
         </div>

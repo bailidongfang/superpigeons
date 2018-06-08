@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 {% block nav_active_user%}active{% endblock %}
-{#{% block extend_static %}<link rel="stylesheet" type="text/css" href="{% static '/blog/css/blog_write.css' %}"/>{% endblock %}#}
+{% block extend_static %}<link rel="stylesheet" type="text/css" href="{% static '/apps/user/css/user_index.css' %}"/>{% endblock %}
 {#导航已选项#}
 {% block nav_active_blog%}active{% endblock %}
 {#巨幕图片路径#}
@@ -9,13 +9,17 @@
 {% block body %}
 <div class="container">
     <div class="row">
-        <div class="col-md-4" style="">
+        {# 左侧 #}
+        <div class="col-md-4" style="margin-top: 10px">
             <div class="panel panel-default">
+                <div class="panel-heading">用户信息:</div>
                 <div class="panel-body">
                     <div class="row">
-                        <div class="col-xs-6" style="margin-top: 30px">
+                        <div class="col-xs-6" style="margin-top: 20px">
+                            <div style="border: 1px solid #e3e3e3;padding: 9px;border-radius: 4px">
                               <h3 style="text-align: center">{{ userinfo.nickname }}</h3><br>
                               <li class="list-unstyled">{{ userinfo.sign }}</li>
+                            </div>
                         </div>
                         <div class="col-xs-6">
                             <div class="commonheadpic center-block">
@@ -27,15 +31,16 @@
                             {% endif %}
                         </div>
                     </div>
-                    <div style="margin-top: 50px">
-                        <li class="list-unstyled">积分：{{ userinfo.score }}</li><br>
-                        <li class="list-unstyled">头衔：{{ userinfo.level }}</li><br>
+                    <div style="margin-top: 30px">
+                        <li style="border: 1px solid #e3e3e3;padding: 9px;border-radius: 4px">积分：{{ userinfo.score }}</li><br>
+                        <li style="border: 1px solid #e3e3e3;padding: 9px;border-radius: 4px">头衔：{{ userinfo.level }}</li><br>
 {#                        <li class="list-unstyled">{{ userinfo.interest }}</li>#}
                     </div>
                 </div>
             </div>
         </div>
-        <div class="col-md-8">
+        {# 右侧 #}
+        <div class="col-md-8" style="margin-top: 10px">
             <div class="panel panel-default" style="padding: 20px">
                 <ul class="nav nav-tabs">
                 <li class="active"><a href="#tab_article" data-toggle="tab"><span class="glyphicon glyphicon-book"></span> 博客</a></li>
@@ -44,18 +49,31 @@
                 </ul>
 
                 <div class="tab-content">
-                    <div id="tab_article" class="tab-pane fade in active" style="padding: 20px">
+                    <div id="tab_article" class="tab-pane fade in active" style="padding: 20px;overflow: hidden">
                         {% for i in articles %}
-                            <div id="{{ i.id }}">
-                                {{ i.title | safe}}
-                                {{ i.text  | striptags|safe|truncatechars:100|linebreaks }}
-                                {% if permission == 'ture' %}
-                                <span class="glyphicon glyphicon-trash article_delete" id="{{ i.id }}" style="float: right"></span>
-                                <span class="glyphicon glyphicon-edit article_edit" id="{{ i.id }}" style="float: right;margin-right: 10px"></span>
-                                {% else %}
-                                {% endif %}
-                                {% if not forloop.last%}<hr>{% endif %}
+                            <div id="{{ i.id }}" class="row">
+                                <div class="col-sm-10 col-xs-9">
+                                    <a href="{% url 'article' i.id %}" class="list-group-item">
+                                        <h4 class="list-group-item-heading">{{ i.title }}</h4>
+                                        {% for tag in i.tags.all %}
+                                            <span class="label label-info">{{ tag.tag_name }}</span>
+                                        {% endfor %}
+                                        {{ i.text  | striptags|safe|truncatechars:80|linebreaks }}
+                                        <div style="font-size: 80%;display: inline-block;">
+                                            <span class="glyphicon glyphicon-comment"></span> {{ i.comment_count }}
+                                            <span class="glyphicon glyphicon-time" style="margin-left: 10px"></span> {{ i.mod_date }}
+                                        </div>
+                                    </a>
+                                </div>
+                                <div class="col-sm-2 col-xs-3">
+                                    {% if permission == 'ture' %}
+                                        <span class="btn btn-default glyphicon glyphicon-trash article_delete" id="{{ i.id }}" style="margin-top: 20px"><span class="hidden-xs"> 删除</span></span>
+                                        <span class="btn btn-default glyphicon glyphicon-edit article_edit" id="{{ i.id }}" style="margin-top: 15px"><span class="hidden-xs"> 编辑<span></span>
+                                    {% else %}
+                                    {% endif %}
+                                </div>
                             </div>
+                            {% if not forloop.last%}<br>{% endif %}
                         {% empty %}
                             <h1>暂无博客</h1>
                         {% endfor %}
