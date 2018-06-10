@@ -33,7 +33,8 @@ class ArticleSeen(models.Model):
 
 class Comment(models.Model):
     id = models.AutoField(primary_key=True)
-    comment_article = models.ForeignKey(Article)
+    comment_article = models.ForeignKey(Article, null=True, default='')
+    recomment_target = models.ForeignKey('self', null=True, default='')
     commenter = models.ForeignKey(User)
     text = models.TextField(default='')
     date = models.DateTimeField(auto_now_add=True)

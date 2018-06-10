@@ -43,6 +43,8 @@
                 <div class="panel-body">
                     {% for i in other_articles %}
                         <a href="{% url 'article' i.id %}"><p>{{ i.title }}</p></a>
+                    {% empty %}
+                        暂无博客
                     {% endfor %}
                 </div>
             </div>
@@ -63,7 +65,7 @@
                         <span style="margin-right: 5px">阅读({{ article.seen_count }})</span>
                         <span>评论({{ comment.count }})</span>
                     </div>
-                    <div id="article_panel" style="display: block">{{ article.text | safe }}</div>
+                    <div id="article_panel" style="display: block;margin-top: 20px">{{ article.text | safe }}</div>
                 </div>
             </div>
             {#评论#}
@@ -71,18 +73,27 @@
                 <div class="panel-heading"><strong>评论列表</strong></div>
                 <div class="panel-body">
                     {% for i in comment %}
-                        <div class="row" style="padding-top: 20px">
+                        <div class="row comments" id="{{ i.id }}" style="padding-top: 20px">
                             <div class="col-xs-4 col-sm-2">
                                 <img class="comment_headpic center-block" src="{% if i.commenter.userinfo.headpic %}{{ i.commenter.userinfo.headpic.url }}{% else %}{% static 'base/img/autoheadpic.jpg'%}{% endif %}">
-                                <p style="text-align: center">{{ i.commenter.userinfo.nickname }}</p>
+                                <p id="commenter_name_{{ i.id }}" style="text-align: center">{{ i.commenter.userinfo.nickname }}</p>
                             </div>
                             <div class="col-xs-8 col-sm-10">
                                 <div class="comment_text" style="min-height: 90px">
-                                    <p class="comment_text_p">{{ i.text }}</p>
+                                    <p class="comment_text_p" id="comment_text_p_{{ i.id }}">{{ i.text }}</p>
                                 </div>
                                 <div class="comment_bottom">
-                                    <p>{{ i.date }}</p>
+                                    <a style="cursor: default" class="recomment" role="{{ i.id }}"">回复</a>
+                                    <div style="float: right;width: 150px;text-align: left;margin-left: 10px">
+                                        <p>{{ i.date }}</p>
+                                    </div>
                                 </div>
+                                {% for r in recomment %}
+                                    {% if r.recomment_target_id == i.id %}
+                                        <hr>
+                                        {{ r.text }}
+                                    {% endif %}
+                                {% endfor %}
                             </div>
                         </div>
                         {% if not forloop.last%}<hr>{% endif %}
@@ -94,9 +105,12 @@
             {#我要评论#}
             <div id="new_comment" class="panel panel-default">
                 {#评论体#}
-                <div class="panel-heading"><strong>我要评论</strong></div>
+                <div class="panel-heading">
+                    <div class="heading-title"><strong>我要评论</strong></div>
+                    <div hidden class="heading-text" style="padding-top: 10px;border-top: 1px #ccc dashed"></div>
+                </div>
                 <div class="panel-body">
-                    <textarea name="text" id="new_comment_textarea"></textarea>
+                    <textarea name="text" id="new_comment_textarea" type="art_comment"></textarea>
                 </div>
                 {#提交区域#}
                 <div style="overflow: hidden">

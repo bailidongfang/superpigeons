@@ -6,6 +6,7 @@ from superpigeons_apps.blog.forms import WriteArticle
 from superpigeons_apps.blog.models import Article, Comment, ArticleSeen, Tags
 from common.Decorator import article_inter_permission
 from common.rePaginator import NewPaginator
+from common.level import Level
 from django.db.models import Q
 import traceback
 import json
@@ -32,10 +33,11 @@ def blog_article(request, artid):
     seener_csrf = request.COOKIES.get('csrftoken')
     article = Article.objects.get(id=artid)
     comment = Comment.objects.filter(comment_article__id=artid)
+    recomment = Comment.objects.filter(recomment_target__in=comment)
     userinfo = UserInfo.objects.get(user_id=article.auther_id)
     other_articles = Article.objects.filter(auther=article.auther_id).exclude(id=artid).values('title', 'id').order_by("-seen_count")[:10]
     # 判断是否浏览过
-    if ArticleSeen.objects.filter(seen_csrf=seener_csrf,seen_article=article).exists():
+    if ArticleSeen.objects.filter(seen_csrf=seener_csrf, seen_article=article).exists():
         pass
     else:
         ArticleSeen.objects.create(seen_csrf=seener_csrf, seen_article=article)
@@ -46,24 +48,34 @@ def blog_article(request, artid):
     context['article'] = article
     context['userinfo'] = userinfo
     context['comment'] = comment
+    context['recomment'] = recomment
     return render(request, 'blog_article.html', context)
 
 
 # 博客评论
 def blog_comment(request):
     try:
-        art_id = request.POST['comment_art_id']
-        text = request.POST['comment_text']
+        comment_art_id = request.POST['comment_art_id']
+        comment_text = request.POST['comment_text']
         commenter_id = request.POST['commenter_id']
+        comment_type = request.POST['comment_type']
+        comment_target = request.POST['comment_target']
         commenter = User.objects.get(id=commenter_id)
-        article = Article.objects.get(id=art_id)
-        Comment.objects.create(comment_article=article, commenter=commenter, text=text)
-        article.comment_count = Comment.objects.filter(comment_article=article).count()
-        article.save()
+        if comment_type == 'art_comment':
+            article = Article.objects.get(id=comment_art_id)
+            Comment.objects.create(commenter=commenter, comment_article=article, text=comment_text)
+            article.comment_count = Comment.objects.filter(comment_article=article).count()
+            article.save()
+        if comment_type == 'com_comment':
+            target_comment = Comment.objects.get(id=comment_target)
+            Comment.objects.create(commenter=commenter, recomment_target=target_comment, text=comment_text)
     except Exception as e:
         traceback.print_exc()
         return HttpResponse(e)
     else:
+        # 加积分 每日登陆=a 写文章=b 评论=c 点赞=d
+        lev = Level(request.user)
+        lev.comput_level("c")
         return HttpResponse('success')
 
 
@@ -109,6 +121,9 @@ def blog_edit(request, ftype, artid):
                     traceback.print_exc()
                     return HttpResponse(e)
                 else:
+                    # 加积分 每日登陆=a 写文章=b 评论=c 点赞=d
+                    lev = Level(request.user)
+                    lev.comput_level("b")
                     return HttpResponse('success')
             else:
                 return HttpResponse('valid error')

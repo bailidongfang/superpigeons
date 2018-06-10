@@ -10,6 +10,7 @@ from django.db import transaction
 from common.FromFtp import headpic_to_ftp
 from common.ImagePillow import crop_image
 from common.Decorator import user_inter_permission
+from common.level import Level
 # Create your views here.
 
 
@@ -81,8 +82,8 @@ def user_login(request):
             loginuser = auth.authenticate(username=formusername, password=formpassword)
             auth.login(request, loginuser)
             # 加积分 每日登陆=a 写文章=b 评论=c 点赞=d
-            # lev = level(formusername)
-            # lev.comput_level("a")
+            lev = Level(formusername)
+            lev.comput_level("a")
             return redirect('index')
         else:
             context['loginform'] = loginform
