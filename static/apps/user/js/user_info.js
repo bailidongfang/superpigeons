@@ -1,4 +1,23 @@
 $(document).ready(function () {
+        //提交个人信息
+        $('#user_info_submit').click(function () {
+            $('#info_permission_name').val(jsdata.username);
+            $.ajax({
+                url:jsdata.userinfo_url,
+                type:'POST',
+                data:$('#user_info_form').serialize(),
+                cache:false,
+                success: function (rst) {
+                    if (rst=='success'){
+                        ShowDialogAlert('提示','提交成功')
+                        }
+                    else {
+                        ShowDialogAlert('提示',rst)
+                    }
+                }
+            });
+        })
+
         //初始化裁剪器
         var image = $('#avatar-wrapper img');
         image.cropper({
@@ -15,7 +34,7 @@ $(document).ready(function () {
             preview: ".avatar-preview",//预览区域
             crop: function (e) {
                 //返回图片编辑相关数据
-                $('#permission_name').val(jsdata.username)
+                $('#headpic_permission_name').val(jsdata.username);
                 $('#avatar_x').val(e.detail.x);
                 $('#avatar_y').val(e.detail.y);
                 $('#avatar_width').val(e.detail.width);

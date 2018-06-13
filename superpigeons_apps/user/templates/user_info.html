@@ -17,7 +17,6 @@
                 <ul class="nav nav-pills nav-stacked" id="left_nav">
                 <li class="active"><a href="#tab_myinfo" data-toggle="pill"><span class="glyphicon glyphicon-th-list"></span> 基本信息</a></li>
                 <li><a href="#tab_headpic" data-toggle="pill"><span class="glyphicon glyphicon-camera"></span> 设置头像</a></li>
-                <li><a href="#">暂无</a></li>
                 </ul>
             </div>
         </div>
@@ -44,15 +43,19 @@
                         </div>
                     </div>
                 </div>
-
-                <div class="input-group">
-                    <span class="input-group-addon">个性签名</span>
-                    <textarea type="text" class="form-control" style="resize: none">{{ userinfo.sign }}</textarea>
-                </div>
-                <div class="input-group">
-                    <span class="input-group-addon">昵称</span>
-                    <input type="text" class="form-control" value="{{ userinfo.nickname }}">
-                </div>
+                <form id="user_info_form">
+                    {% csrf_token %}
+                    <div class="input-group">
+                        <span class="input-group-addon">个性签名</span>
+                        <textarea name="sign" type="text" class="form-control" style="resize: none">{{ userinfo.sign }}</textarea>
+                    </div>
+                    <div class="input-group">
+                        <span class="input-group-addon">昵称</span>
+                        <input name="nickname" type="text" class="form-control" value="{{ userinfo.nickname }}">
+                    </div>
+                    <input type="hidden" id="info_permission_name" name="permission_name">
+                </form>
+                <button id="user_info_submit" class="btn btn-primary btn-block" style="margin-bottom: 15px;width: auto">提交</button>
 {#                <div class="input-group">#}
 {#                    <span class="input-group-addon">兴趣</span>#}
 {#                    <input type="text" class="form-control" value="{{ userinfo.interest }}">#}
@@ -86,7 +89,7 @@
                     <form action="{% url 'myinfo_headpic' %}" method="post" id="avatar_form" enctype="multipart/form-data">
                         {%csrf_token%}
                        <input style="display:none" type="file" class="avatar-input" id="avatar-input" name="avatar_file" accept=".jpg,.jpeg,.png">
-                       <input type="hidden" id="permission_name" name="permission_name">
+                       <input type="hidden" id="headpic_permission_name" name="permission_name">
                        <input type="hidden" id="avatar_x" name="avatar_x">
                        <input type="hidden" id="avatar_y" name="avatar_y">
                        <input type="hidden" id="avatar_width" name="avatar_width">
@@ -100,6 +103,7 @@
 
 <script>
 var jsdata = {
+    userinfo_url:'{% url 'myinfo_userinfo' %}',
     headpic_url:'{% url 'myinfo_headpic' %}',
     username:'{{ userinfo.username }}'
 }

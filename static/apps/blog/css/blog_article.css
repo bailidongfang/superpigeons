@@ -50,6 +50,19 @@ button#new_comment_btn{
     margin-left: 15px;
     margin-right: 15px;
 }
+/*评论回复*/
+.recomment_headpic{
+  border-radius: 15%;
+  overflow: hidden;
+  height: 40px;
+  width: 40px;
+  margin-bottom: 10px;
+}
+.recomment_headpic img{
+  height: 40px;
+  width: 40px;
+}
+
 
 
 

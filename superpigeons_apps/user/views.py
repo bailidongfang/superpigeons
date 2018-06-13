@@ -11,6 +11,7 @@ from common.FromFtp import headpic_to_ftp
 from common.ImagePillow import crop_image
 from common.Decorator import user_inter_permission
 from common.level import Level
+import traceback
 # Create your views here.
 
 
@@ -24,6 +25,22 @@ def user_my_info(request, username):
     return render(request, 'user_info.html', context)
 
 
+# 我的信息-修改信息
+@user_inter_permission
+def user_my_info_userinfo(request):
+    try:
+        username = request.POST['permission_name']
+        nickname = request.POST['nickname']
+        sign = request.POST['sign']
+        userinfo = UserInfo.objects.get(username=username)
+        userinfo.nickname = nickname
+        userinfo.sign = sign
+        userinfo.save()
+    except Exception as e:
+        traceback.print_exc()
+        return HttpResponse(e)
+    else:
+        return HttpResponse('success')
 # 我的信息-修改头像
 @user_inter_permission
 def user_my_info_headpic(request):

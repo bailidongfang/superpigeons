@@ -28,12 +28,14 @@ class Article(models.Model):
 class ArticleSeen(models.Model):
     id = models.AutoField(primary_key=True)
     seen_csrf = models.TextField(max_length=50, default='1')
+    seener = models.ForeignKey(UserInfo)
     seen_article = models.ForeignKey(Article)
 
 
 class Comment(models.Model):
     id = models.AutoField(primary_key=True)
     comment_article = models.ForeignKey(Article, null=True, default='')
+    recomment_tree = models.ForeignKey('self', related_name='tree', null=True, default='')
     recomment_target = models.ForeignKey('self', null=True, default='')
     commenter = models.ForeignKey(User)
     text = models.TextField(default='')

@@ -33,14 +33,14 @@ def blog_article(request, artid):
     seener_csrf = request.COOKIES.get('csrftoken')
     article = Article.objects.get(id=artid)
     comment = Comment.objects.filter(comment_article__id=artid)
-    recomment = Comment.objects.filter(recomment_target__in=comment)
     userinfo = UserInfo.objects.get(user_id=article.auther_id)
+    seener = UserInfo.objects.get(username=request.user)
     other_articles = Article.objects.filter(auther=article.auther_id).exclude(id=artid).values('title', 'id').order_by("-seen_count")[:10]
     # 判断是否浏览过
     if ArticleSeen.objects.filter(seen_csrf=seener_csrf, seen_article=article).exists():
         pass
     else:
-        ArticleSeen.objects.create(seen_csrf=seener_csrf, seen_article=article)
+        ArticleSeen.objects.create(seen_csrf=seener_csrf, seen_article=article, seener=seener)
         article.seen_count = ArticleSeen.objects.filter(seen_article=article).count()
         article.save()
     context = dict()
@@ -48,7 +48,6 @@ def blog_article(request, artid):
     context['article'] = article
     context['userinfo'] = userinfo
     context['comment'] = comment
-    context['recomment'] = recomment
     return render(request, 'blog_article.html', context)
 
 
@@ -60,6 +59,7 @@ def blog_comment(request):
         commenter_id = request.POST['commenter_id']
         comment_type = request.POST['comment_type']
         comment_target = request.POST['comment_target']
+        comment_tree = request.POST['comment_tree']
         commenter = User.objects.get(id=commenter_id)
         if comment_type == 'art_comment':
             article = Article.objects.get(id=comment_art_id)
@@ -68,7 +68,8 @@ def blog_comment(request):
             article.save()
         if comment_type == 'com_comment':
             target_comment = Comment.objects.get(id=comment_target)
-            Comment.objects.create(commenter=commenter, recomment_target=target_comment, text=comment_text)
+            tree_comment = Comment.objects.get(id=comment_tree)
+            Comment.objects.create(commenter=commenter, recomment_target=target_comment, recomment_tree=tree_comment, text=comment_text)
     except Exception as e:
         traceback.print_exc()
         return HttpResponse(e)

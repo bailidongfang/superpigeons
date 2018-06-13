@@ -82,17 +82,32 @@
                                 <div class="comment_text" style="min-height: 90px">
                                     <p class="comment_text_p" id="comment_text_p_{{ i.id }}">{{ i.text }}</p>
                                 </div>
-                                <div class="comment_bottom">
-                                    <a style="cursor: default" class="recomment" role="{{ i.id }}"">回复</a>
+                                <div class="comment_bottom" style="margin-bottom: 10px">
+                                    <a style="cursor: default" class="recomment" role="{{ i.id }}" tree="{{ i.id }}">回复</a>
                                     <div style="float: right;width: 150px;text-align: left;margin-left: 10px">
                                         <p>{{ i.date }}</p>
                                     </div>
                                 </div>
-                                {% for r in recomment %}
-                                    {% if r.recomment_target_id == i.id %}
-                                        <hr>
-                                        {{ r.text }}
-                                    {% endif %}
+                                {% for r in i.tree.all %}
+                                    <div class="row" style=";padding-top: 10px;border-top: 1px dashed rgb(214, 208, 208);margin-right: 0px">
+                                        <div class="col-xs-4 col-sm-1">
+                                            <img class="recomment_headpic center-block" src="{% if r.commenter.userinfo.headpic %}{{ r.commenter.userinfo.headpic.url }}{% else %}{% static 'base/img/autoheadpic.jpg'%}{% endif %}">
+                                        </div>
+                                        <div class="col-xs-8 col-sm-11" style="padding-right: 0px">
+                                            <span id="commenter_name_{{ r.id }}" style="font-weight:bold">{{ r.commenter.userinfo.nickname }}</span>
+                                            <span> 回复 </span>
+                                            <span style="font-weight:bold">{{ r.recomment_target.commenter.userinfo.nickname }}</span>
+                                            <div class="comment_text" style="min-height: 50px">
+                                                <p class="comment_text_p" id="comment_text_p_{{ r.id }}">{{ r.text }}</p>
+                                            </div>
+                                            <div class="comment_bottom">
+                                                <a style="cursor: default" class="recomment" role="{{ r.id }}" tree="{{ i.id }}">回复</a>
+                                                <div style="float: right;width: 150px;text-align: left;margin-left: 10px">
+                                                    <p>{{ r.date }}</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
                                 {% endfor %}
                             </div>
                         </div>
