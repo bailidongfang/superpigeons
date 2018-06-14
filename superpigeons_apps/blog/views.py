@@ -30,28 +30,32 @@ def blog_index(request):
 
 # 博客内容页
 def blog_article(request, artid):
-    seener_csrf = request.COOKIES.get('csrftoken')
-    article = Article.objects.get(id=artid)
-    comment = Comment.objects.filter(comment_article__id=artid)
-    userinfo = UserInfo.objects.get(user_id=article.auther_id)
-    if str(request.user) == 'AnonymousUser':
-        seener = str(request.user)
+    try:
+        seener_csrf = request.COOKIES.get('csrftoken')
+        article = Article.objects.get(id=artid)
+        comment = Comment.objects.filter(comment_article__id=artid)
+        userinfo = UserInfo.objects.get(user_id=article.auther_id)
+        if str(request.user) == 'AnonymousUser':
+            seener = str(request.user)
+        else:
+            seener = UserInfo.objects.get(username=request.user)
+        other_articles = Article.objects.filter(auther=article.auther_id).exclude(id=artid).values('title', 'id').order_by("-seen_count")[:10]
+        # 判断是否浏览过
+        if ArticleSeen.objects.filter(seen_csrf=seener_csrf, seen_article=article).exists():
+            pass
+        else:
+            ArticleSeen.objects.create(seen_csrf=seener_csrf, seen_article=article, seener=seener)
+            article.seen_count = ArticleSeen.objects.filter(seen_article=article).count()
+            article.save()
+        context = dict()
+        context['other_articles'] = other_articles
+        context['article'] = article
+        context['userinfo'] = userinfo
+        context['comment'] = comment
+    except Exception as e:
+        traceback.print_exc()
     else:
-        seener = UserInfo.objects.get(username=request.user)
-    other_articles = Article.objects.filter(auther=article.auther_id).exclude(id=artid).values('title', 'id').order_by("-seen_count")[:10]
-    # 判断是否浏览过
-    if ArticleSeen.objects.filter(seen_csrf=seener_csrf, seen_article=article).exists():
-        pass
-    else:
-        ArticleSeen.objects.create(seen_csrf=seener_csrf, seen_article=article, seener=seener)
-        article.seen_count = ArticleSeen.objects.filter(seen_article=article).count()
-        article.save()
-    context = dict()
-    context['other_articles'] = other_articles
-    context['article'] = article
-    context['userinfo'] = userinfo
-    context['comment'] = comment
-    return render(request, 'blog_article.html', context)
+        return render(request, 'blog_article.html', context)
 
 
 # 博客评论
