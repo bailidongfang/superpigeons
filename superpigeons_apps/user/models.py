@@ -17,7 +17,7 @@ class UserInfo(models.Model):
     nickname = models.CharField(max_length=20)
     sign = models.CharField(max_length=500, default='这个人很懒，什么都没有留下')
     score = models.IntegerField(default=0)
-    level = models.CharField(max_length=20, default='实习小编')
+    level = models.CharField(max_length=20, default='小鸽蛋')
     interest = models.ManyToManyField(Interest, null=True)
     headpic = models.ImageField(upload_to=headpic_path, storage=fs, null=True)
 

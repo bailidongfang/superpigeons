@@ -54,7 +54,7 @@
             {#文章#}
             <div id="article" class="panel panel-default">
                 <div class="panel-body">
-                    <h2 style="margin-bottom: 20px;">{{ article.title}}</h2>
+                    <h2 style="margin-bottom: 20px;word-break:break-all">{{ article.title}}</h2>
                     <div class="col-sm-9 col-xs-6"  style="padding-left: 0;">
                             {% for tag in article.tags.all %}
                                 <h3 style="display:inline "><span class="label label-info">{{ tag.tag_name }}</span></h3>
@@ -63,22 +63,23 @@
                     <div class="col-sm-offset-9 col-xs-offset-6">
                         <span>发布时间: {{ article.add_date }}</span><br>
                         <span style="margin-right: 5px">阅读({{ article.seen_count }})</span>
-                        <span>评论({{ comment.count }})</span>
+                        <span>评论({{ article.comment_count }})</span>
                     </div>
                     <div id="article_panel" style="display: block;margin-top: 20px">{{ article.text | safe }}</div>
                 </div>
             </div>
             {#评论#}
-            <div id="comment" class="panel panel-default">
+            <div id="load_comment">
+                <div id="comment" class="panel panel-default">
                 <div class="panel-heading"><strong>评论列表</strong></div>
                 <div class="panel-body">
                     {% for i in comment %}
                         <div class="row comments" id="{{ i.id }}" style="padding-top: 20px">
-                            <div class="col-xs-4 col-sm-2">
+                            <div class="col-xs-3 col-sm-2">
                                 <img class="comment_headpic center-block" src="{% if i.commenter.userinfo.headpic %}{{ i.commenter.userinfo.headpic.url }}{% else %}{% static 'base/img/autoheadpic.jpg'%}{% endif %}">
                                 <p id="commenter_name_{{ i.id }}" style="text-align: center">{{ i.commenter.userinfo.nickname }}</p>
                             </div>
-                            <div class="col-xs-8 col-sm-10">
+                            <div class="col-xs-9 col-sm-10">
                                 <div class="comment_text" style="min-height: 90px">
                                     <p class="comment_text_p" id="comment_text_p_{{ i.id }}">{{ i.text }}</p>
                                 </div>
@@ -116,6 +117,7 @@
                         <p>暂无评论</p>
                     {% endfor %}
                 </div>
+            </div>
             </div>
             {#我要评论#}
             <div id="new_comment" class="panel panel-default">

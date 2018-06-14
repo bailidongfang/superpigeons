@@ -41,8 +41,8 @@
                     {% for i in article %}
                         <div id="{{ i.id }}" class="row">
                             <div class="col-xs-12">
-                                <a href="{% url 'article' i.id %}" class="list-group-item">
-                                    <h4 class="list-group-item-heading">{{ i.title }}</h4>
+                                <div class="list-group-item">
+                                    <a href="{% url 'article' i.id %}"><h4 class="list-group-item-heading">{{ i.title }}</h4></a>
                                     {% for tag in i.tags.all %}
                                         <span class="label label-info">{{ tag.tag_name }}</span>
                                     {% endfor %}
@@ -51,7 +51,7 @@
                                         <span class="glyphicon glyphicon-comment"></span> {{ i.comment_count }}
                                         <span class="glyphicon glyphicon-time" style="margin-left: 10px"></span> {{ i.mod_date }}
                                     </div>
-                                </a>
+                                </div>
                             </div>
                         </div>
                         <br>

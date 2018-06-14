@@ -33,7 +33,7 @@ def blog_article(request, artid):
     try:
         seener_csrf = request.COOKIES.get('csrftoken')
         article = Article.objects.get(id=artid)
-        comment = Comment.objects.filter(comment_article__id=artid)
+        comment = Comment.objects.filter(comment_article__id=artid).order_by("-date")
         userinfo = UserInfo.objects.get(user_id=article.auther_id)
         seener = str(request.user)
         other_articles = Article.objects.filter(auther=article.auther_id).exclude(id=artid).values('title', 'id').order_by("-seen_count")[:10]
@@ -65,15 +65,23 @@ def blog_comment(request):
         comment_target = request.POST['comment_target']
         comment_tree = request.POST['comment_tree']
         commenter = User.objects.get(id=commenter_id)
+        article = Article.objects.get(id=comment_art_id)
+        # 父评论
         if comment_type == 'art_comment':
-            article = Article.objects.get(id=comment_art_id)
-            Comment.objects.create(commenter=commenter, comment_article=article, text=comment_text)
-            article.comment_count = Comment.objects.filter(comment_article=article).count()
-            article.save()
+            newcomment = Comment.objects.create(commenter=commenter, comment_article=article, text=comment_text)
+            commentid = str(newcomment.id)
+        # 子评论
         if comment_type == 'com_comment':
             target_comment = Comment.objects.get(id=comment_target)
             tree_comment = Comment.objects.get(id=comment_tree)
-            Comment.objects.create(commenter=commenter, recomment_target=target_comment, recomment_tree=tree_comment, text=comment_text)
+            newcomment = Comment.objects.create(commenter=commenter, recomment_target=target_comment, recomment_tree=tree_comment, text=comment_text)
+            commentid = str(newcomment.id)
+        # 浏览数统计
+        comments = Comment.objects.filter(comment_article=article)
+        comments_count = comments.count()
+        recomments_count = Comment.objects.filter(recomment_tree__in=comments).count()
+        article.comment_count = comments_count + recomments_count
+        article.save()
     except Exception as e:
         traceback.print_exc()
         return HttpResponse(e)
@@ -81,7 +89,7 @@ def blog_comment(request):
         # 加积分 每日登陆=a 写文章=b 评论=c 点赞=d
         lev = Level(request.user)
         lev.comput_level("c")
-        return HttpResponse('success')
+        return HttpResponse('success'+commentid)
 
 
 # 博客编辑

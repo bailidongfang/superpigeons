@@ -39,18 +39,19 @@ $(document).ready(function () {
     })
     //评论提交
     $('#new_comment_btn').click(function () {
+        var subbtn = $(this)
+        subbtn.prop('disabled',true)
         //判断登陆和内容为空
         if(jsdata.is_login=='false'){
-            $('#infoModal h4').html('您还没有登陆，请先登录');
-            $('#infoModal').modal('show');
+            ShowDialogAlert('提示','您还没有登陆，请先登录')
             $('#infoModal').on('hide.bs.modal', function () {
                 window.location.href='/auth/login'
             })
             return false
         }
         if($('#new_comment_textarea').val()==''){
-            $('#infoModal h4').html('内容为空');
-            $('#infoModal').modal('show');
+            ShowDialogAlert('提示','评论内存为空');
+            subbtn.prop('disabled',false)
             return false
         }
         //为postjson赋值
@@ -59,17 +60,30 @@ $(document).ready(function () {
         post_json.comment_type=$('#new_comment_textarea').attr('type');
         //post提交
         $.post(jsdata.comment_url,post_json,function (response) {
-            if(response=='success'){
-            $('#infoModal h4').html('评论成功');
-            $('#infoModal').modal('show');
-            $('#infoModal').on('hide.bs.modal', function () {
-                        window.location.reload()
-            })
+            if(response.indexOf('success')!= -1){
+                ShowDialogAlert('提示','评论成功',function () {
+                    response.slice(7)
+                    window.location.href='?cmd='+response.slice(7)
+                })
             }
             else{
-            $('#infoModal h4').html(response);
-            $('#infoModal').modal('show');
+                ShowDialogServerError(response);
+                subbtn.prop('disabled',false)
             }
         })
-    })
+    });
+
+
+    //获取url参数
+    $.getUrlParam = function (name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) return unescape(r[2]); return null;
+    };
+    //根据参数定位高度
+    window.onload=function () {
+        var id=$.getUrlParam('cmd')
+        if(id != null){
+        $('body,html').animate({scrollTop:$('#comment_text_p_'+id).offset().top-300},100);}
+    }
 })

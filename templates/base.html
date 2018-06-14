@@ -14,11 +14,10 @@
     <script src="{% static '/base/js/jquery-3.2.1.js' %}"></script>
     <script src="{% static '/bootstrap-3.3.7-dist/js/bootstrap.min.js' %}"></script>
     <script src="{% static '/bootstrap-3.3.7-dist/js/bootstrap-dialog.min.js' %}"></script>
+    <script src="{% static '/base/js/jquery.cookie.js'%}"></script>
     <script src="{% static '/base/js/base.js' %}"></script>
     {#子页面需要的静态文件#}
     {% block extend_static %}{% endblock %}
-
-
 </head>
 
 <body>
@@ -46,7 +45,7 @@
                 <li class="{% block nav_active_blog %}{% endblock %}">
                     <a href="{% url 'blog' %}"><span class="glyphicon glyphicon-duplicate" aria-hidden="true"></span> 博客</a>
                 </li>
-                <li><a href="">其他</a></li>
+{#                <li><a href="">其他</a></li>#}
             </ul>
 
             <ul class="nav navbar-nav navbar-right" style="margin-right: 10px">
