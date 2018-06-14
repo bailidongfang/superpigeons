@@ -35,10 +35,7 @@ def blog_article(request, artid):
         article = Article.objects.get(id=artid)
         comment = Comment.objects.filter(comment_article__id=artid)
         userinfo = UserInfo.objects.get(user_id=article.auther_id)
-        if str(request.user) == 'AnonymousUser':
-            seener = str(request.user)
-        else:
-            seener = UserInfo.objects.get(username=request.user)
+        seener = str(request.user)
         other_articles = Article.objects.filter(auther=article.auther_id).exclude(id=artid).values('title', 'id').order_by("-seen_count")[:10]
         # 判断是否浏览过
         if ArticleSeen.objects.filter(seen_csrf=seener_csrf, seen_article=article).exists():

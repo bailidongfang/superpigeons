@@ -28,7 +28,7 @@ class Article(models.Model):
 class ArticleSeen(models.Model):
     id = models.AutoField(primary_key=True)
     seen_csrf = models.TextField(max_length=50, default='1')
-    seener = models.ForeignKey(UserInfo)
+    seener = models.TextField(max_length=50, default='')
     seen_article = models.ForeignKey(Article)
 
 
