@@ -43,7 +43,7 @@ INSTALLED_APPS = [
     'superpigeons_apps.user',
     'superpigeons_apps.index',
     'ckeditor',
-    'ckeditor_uploader'
+    'other_apps.ckeditor_uploader'
 ]
 
 # SITE_ID = 1

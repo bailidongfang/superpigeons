@@ -39,19 +39,19 @@ $(document).ready(function () {
     })
     //评论提交
     $('#new_comment_btn').click(function () {
-        var subbtn = $(this)
-        subbtn.prop('disabled',true)
+        var subbtn = $(this);
+        subbtn.prop('disabled',true);
         //判断登陆和内容为空
         if(jsdata.is_login=='false'){
-            ShowDialogAlert('提示','您还没有登陆，请先登录')
-            $('#infoModal').on('hide.bs.modal', function () {
+            ShowDialogShow('提示','您还没有登陆，请先登录',function () {
                 window.location.href='/auth/login'
-            })
+            });
+            subbtn.prop('disabled',false);
             return false
         }
         if($('#new_comment_textarea').val()==''){
             ShowDialogAlert('提示','评论内存为空');
-            subbtn.prop('disabled',false)
+            subbtn.prop('disabled',false);
             return false
         }
         //为postjson赋值
@@ -86,4 +86,5 @@ $(document).ready(function () {
         if(id != null){
         $('body,html').animate({scrollTop:$('#comment_text_p_'+id).offset().top-300},100);}
     }
+
 })

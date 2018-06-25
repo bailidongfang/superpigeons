@@ -1,8 +1,10 @@
-from django.db import models
 from django.contrib.auth.models import User
+from django.db import models
+
+from other_apps.ckeditor_uploader.fields import RichTextUploadingField
 from superpigeons_apps.user.models import UserInfo
-from ckeditor_uploader.fields import RichTextUploadingField
-from ckeditor.fields import RichTextField
+
+
 # Create your models here.
 
 

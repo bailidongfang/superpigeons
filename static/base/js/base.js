@@ -23,7 +23,14 @@ function ShowDialogShow(title,msg,func) {
             draggable : true,
             closeByBackdrop: false,
             closeByKeyboard: false,
-            onhidden:func,
+            buttons:[{
+                label: '确定',
+                cssClass:'btn btn-default btn-sm',
+                action: function(dialog) {
+                    func.call();
+                    dialog.close()
+                }
+            }]
         })
 };
 

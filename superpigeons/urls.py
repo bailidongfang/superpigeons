@@ -28,6 +28,6 @@ urlpatterns = [
     url(r'^$', index, name='index'),
     url(r'blog/', include('superpigeons_apps.blog.urls')),
     url(r'auth/', include('superpigeons_apps.user.urls')),
-    url(r'^ckeditor/', include('ckeditor_uploader.urls')),
+    url(r'^ckeditor/', include('other_apps.ckeditor_uploader.urls')),
     url(r'^media/(?P<path>.*)$', get_from_ftp),
 ]

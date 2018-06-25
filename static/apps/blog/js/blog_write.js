@@ -31,11 +31,13 @@ $(document).ready(function () {
             success: function (rst) {
                 if (rst=='success'){
                     ShowDialogAlert('提示','提交成功',function () {
+                        $(window).unbind('beforeunload');
                         window.location.href = "/blog"
                     })
                     }
                 else {
                     ShowDialogAlert('提示',rst)
+
                 }
             }
         });
@@ -116,5 +118,8 @@ $(document).ready(function () {
             });
         });
     })
-
+    //离开确认
+    $(window).bind('beforeunload',function(){
+        return '您输入的内容尚未保存，确定离开此页面吗？';
+    });
 })

@@ -133,7 +133,7 @@ def user_register(request):
             try:
                 # 两条数据绑定在同一个事务上，保证数据一致
                 with transaction.atomic():
-                    newuser = User.objects.create_user(username=formusername, password=formpassword, email=formemail)
+                    newuser = User.objects.create_user(username=formusername, password=formpassword, email=formemail, is_staff=1)
                     UserInfo.objects.create(user=newuser, username=formusername, nickname=formusername)
             except Exception as e:
                 print(e)
