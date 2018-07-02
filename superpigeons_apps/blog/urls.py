@@ -15,10 +15,11 @@ Including another URLconf
 """
 # import django_comments
 from django.conf.urls import url
-from .views import blog_index, blog_edit, blog_article, blog_comment, tags_edit
+from .views import blog_index, blog_edit, blog_article, blog_comment, tags_edit,search
 
 urlpatterns = [
     url(r'^$', blog_index, name='blog'),
+    url(r'search/', search, name='search'),
     url(r'article/(?P<artid>.*)', blog_article, name='article'),
     url(r'comment/', blog_comment, name='comment'),
     url(r'blog_edit/(?P<ftype>.*)/(?P<artid>.*)', blog_edit, name='blogedit'),

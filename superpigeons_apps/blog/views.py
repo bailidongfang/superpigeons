@@ -12,6 +12,24 @@ import traceback
 import json
 
 
+# 搜索
+def search(request):
+    kw = request.GET['kw']
+    article = Article.objects.filter(title__contains=kw).order_by('-mod_date')
+    top_seen_article = Article.objects.all().values('id', 'title', 'seen_count').order_by('-seen_count')[:10]
+    current_page = request.GET.get("page", 1)
+    pages = NewPaginator(article, 10)
+    article = pages.page(current_page)
+    # tags = Tags.objects.all()
+    context = dict()
+    # context['tags'] = tags
+    context['top_seen_article'] = top_seen_article
+    context['article'] = article
+    context['pages'] = pages
+    context['kw'] = kw
+    return render(request, 'blog_index.html', context)
+
+
 # 博客主页
 def blog_index(request):
     article = Article.objects.all().order_by('-mod_date')
@@ -19,9 +37,9 @@ def blog_index(request):
     current_page = request.GET.get("page", 1)
     pages = NewPaginator(article, 10)
     article = pages.page(current_page)
-    tags = Tags.objects.all()
+    # tags = Tags.objects.all()
     context = dict()
-    context['tags'] = tags
+    # context['tags'] = tags
     context['top_seen_article'] = top_seen_article
     context['article'] = article
     context['pages'] = pages

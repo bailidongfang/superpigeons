@@ -17,8 +17,21 @@ $(document).ready(function () {
         comment_tree:'',
         comment_text:''
     };
+    //图片大小自适应
+    function ImgSize() {
+        var idWidth = $('#article_panel').width(); // 容器的宽度和高度
+        $('#article_panel  img').each(function(){
+            var img_w = $(this).width(),
+                img_h = $(this).height();
+            // 如果图片自身宽度大于容器的宽度的话 那么高度等比例缩放
+            if(img_w > idWidth) {
+                var height = img_h * idWidth / img_w;
+                $(this).css({"width":idWidth, "height":height});
+            }
+        })  ;
+    }
+    ImgSize();
     //回复评论
-
     $('.recomment').click(function () {
         //标题修改
         var headin_title = $('#new_comment .panel-heading .heading-title');

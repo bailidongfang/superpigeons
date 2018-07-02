@@ -9,7 +9,9 @@ $(document).ready(function () {
                 cache:false,
                 success: function (rst) {
                     if (rst=='success'){
-                        ShowDialogAlert('提示','提交成功')
+                        ShowDialogShow('提示','提交成功',function () {
+                            window.location.href='/auth/userindex/'+jsdata.user
+                        })
                         }
                     else {
                         ShowDialogAlert('提示',rst)

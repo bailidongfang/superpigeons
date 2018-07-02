@@ -29,3 +29,20 @@ body{
 li{
     list-style-type: none;
 }
+
+.navbar-form{
+    position: relative;
+    right: 10px;
+}
+.navbar-form button[type="submit"]{
+    position: absolute;
+    top:24%;
+    right: 20px;
+    background:none;
+    border:none;
+}
+@media (max-width: 767px){
+    .navbar-form button[type="submit"]{
+        top:35%;
+    }
+}
